@@ -1,0 +1,11 @@
+<nav>
+    <ul>
+        <li><a href="/index.html" th:href="@{{path}/index.html(path=${rel})}">All</a></li>
+
+        <li th:each="nodeType : ${model.nodeTypeSet}">
+            <a href="/index.html"
+               th:href="@{{path}/{type}_index.html(path=${rel},type=${#strings.replace(nodeType,':','')})}"
+               th:text="${#strings.replace(nodeType,':','')}">Type</a>
+        </li>
+    </ul>
+</nav>

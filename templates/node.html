@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" th:content="|${model.nodeTypeNames[node.type]} ${node.name}|"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <link rel="stylesheet" type="text/css" href="../global.css">
+    <title th:text="|${model.nodeTypeNames[node.type]} '${node.name}'|"></title>
+</head>
+
+<body>
+<div th:replace="header (title=|${model.nodeTypeNames[node.type]} '${node.name}'|,modelName=${model.name})"></div>
+
+<div id="content">
+    <div th:replace="navigation (rel='..')"></div>
+
+    <main>
+        <h1>Beschreibung</h1>
+        <blockquote th:text="${node.doc}"></blockquote>
+
+        <h1>Causes</h1>
+
+        <ul>
+            <li th:each="edge : ${node.fromNodes.values}">
+                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.from.name})}"
+                   th:text="${edge.from.name}">Name</a>
+                &#x2192;
+                [[${model.edgeTypeNames[edge.type]}]]
+                &#x2192;
+                [[${node.name}]]
+            </li>
+        </ul>
+
+        <h1>Consequences</h1>
+
+        <ul>
+            <li th:each="edge : ${node.toNodes.values}">
+                [[${node.name}]]
+                &#x2192;
+                [[${model.edgeTypeNames[edge.type]}]]
+                &#x2192;
+                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.to.name})}"
+                   th:text="${edge.to.name}">Name</a>
+            </li>
+        </ul>
+    </main>
+
+    <div id="secondary">
+    </div>
+</div>
+
+<div th:replace="footer"></div>
+
+</body>
+</html>

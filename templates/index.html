@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" th:content="${model.name}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <link rel="stylesheet" type="text/css" href="global.css">
+    <title th:text="${model.name}"></title>
+</head>
+
+<body>
+
+<div th:replace="header (title=${model.name},modelName=${model.name})"></div>
+
+<div id="content">
+    <div th:replace="navigation (rel='.')"></div>
+
+    <main>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="node : ${nodes}">
+                <td><a href="nodes/Name.html" th:href="@{nodes/{name}.html(name=${node.name})}" th:text="${node.name}">Name</a>
+                </td>
+                <td th:text="${model.nodeTypeNames[node.type]}">Type</td>
+                <td th:text="${node.doc}">Doc</td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <div id="secondary">
+    </div>
+</div>
+
+<div th:replace="footer"></div>
+
+</body>
+</html>
