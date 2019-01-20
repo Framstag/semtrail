@@ -4,20 +4,38 @@ import mu.KotlinLogging
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.FileTemplateResolver
+import java.io.File
 import java.nio.charset.StandardCharsets
+import java.nio.file.Paths
 
 val logger = KotlinLogging.logger("main")
 
 fun main(args : Array<String>) {
-    if (args.size !=2) {
-        logger.error("SemTrail <filename>.semtrail <target directory>")
+    if (args.size !=3) {
+        logger.error("SemTrail <description file.semtrail <template directory> <target directory>")
         return
     }
 
     val filename = args[0]
-    val targetDirectory = args[1]
+    val templateDirectoryArg = args[1]
+    val targetDirectory = args[2]
 
-    logger.info("Loading file '$filename'...")
+    val templateDirectoryFile = File(templateDirectoryArg)
+
+    if (!templateDirectoryFile.exists()) {
+        logger.error("Template directory '$templateDirectoryArg' does not exist!")
+        return
+    }
+
+    if (!templateDirectoryFile.isDirectory) {
+        logger.error("Template directory '$templateDirectoryArg' is not a directory!")
+        return
+    }
+
+    val templateDirectory =
+        if (templateDirectoryFile.path.endsWith(File.separator)) templateDirectoryFile.path else templateDirectoryFile.path + File.separator
+
+    logger.info("Loading SemTrail file '$filename'...")
 
     val scanner = Scanner(args[0])
     val model = Model()
@@ -30,11 +48,13 @@ fun main(args : Array<String>) {
         return
     }
 
+    logger.info("Generating web page based on templates in directory '$templateDirectory' to directory '$targetDirectory'...")
+
     val templateResolver = FileTemplateResolver()
 
     templateResolver.characterEncoding = StandardCharsets.UTF_8.name()
     templateResolver.templateMode = TemplateMode.HTML
-    templateResolver.prefix = "templates/"
+    templateResolver.prefix = templateDirectory
     templateResolver.suffix = ".html"
 
     val templateEngine = TemplateEngine()

@@ -36,7 +36,7 @@ decisions - but nobody never have seen them, neither are they documented.
 Simply call it using
 
 ```
-semtrail <Description file>.semtrail <Target Directory>
+SemTrail <description file>.semtrail <template directory> <target directory>
 ```
 
 There are currently some quirks in the command line handling 
