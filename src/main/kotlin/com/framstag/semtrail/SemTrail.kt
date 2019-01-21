@@ -78,5 +78,13 @@ fun main(args : Array<String>) {
 
     orphanGenerator.generate(templateEngine)
 
+    val starterGenerator = StarterIndexPageGenerator(targetDirectory,model)
+
+    starterGenerator.generate(templateEngine)
+
+    val leaveGenerator = LeaveIndexPageGenerator(targetDirectory,model)
+
+    leaveGenerator.generate(templateEngine)
+
     logger.info("Done.")
 }

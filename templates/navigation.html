@@ -7,6 +7,8 @@
                th:href="@{{path}/{type}_index.html(path=${rel},type=${#strings.replace(nodeType,':','')})}"
                th:text="${#strings.replace(nodeType,':','')}">Type</a>
         </li>
+        <li><a href="/starter.html" th:href="@{{path}/starter.html(path=${rel})}">Starter</a></li>
+        <li><a href="/leave.html" th:href="@{{path}/leave.html(path=${rel})}">Leaves</a></li>
         <li><a href="/orphans.html" th:href="@{{path}/orphans.html(path=${rel})}">Orphans</a></li>
     </ul>
 </nav>
