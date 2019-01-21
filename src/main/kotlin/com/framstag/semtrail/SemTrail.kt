@@ -74,5 +74,9 @@ fun main(args : Array<String>) {
 
     nodePagesGenerator.generate(templateEngine)
 
+    val orphanGenerator = OrphanIndexPageGenerator(targetDirectory,model)
+
+    orphanGenerator.generate(templateEngine)
+
     logger.info("Done.")
 }
