@@ -6,7 +6,7 @@ import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.FileTemplateResolver
 import java.io.File
 import java.nio.charset.StandardCharsets
-import java.nio.file.Paths
+import javax.swing.text.html.CSS
 
 val logger = KotlinLogging.logger("main")
 
@@ -50,53 +50,67 @@ fun main(args : Array<String>) {
 
     logger.info("Generating web page based on templates in directory '$templateDirectory' to directory '$targetDirectory'...")
 
-    val templateResolver = FileTemplateResolver()
+    val httpTemplateResolver = FileTemplateResolver()
 
-    templateResolver.characterEncoding = StandardCharsets.UTF_8.name()
-    templateResolver.templateMode = TemplateMode.HTML
-    templateResolver.prefix = templateDirectory
-    templateResolver.suffix = ".html"
+    httpTemplateResolver.characterEncoding = StandardCharsets.UTF_8.name()
+    httpTemplateResolver.templateMode = TemplateMode.HTML
+    httpTemplateResolver.prefix = templateDirectory
+    httpTemplateResolver.suffix = ".html"
 
-    val templateEngine = TemplateEngine()
-    templateEngine.addTemplateResolver(templateResolver)
+    val httpTemplateEngine = TemplateEngine()
+    httpTemplateEngine.addTemplateResolver(httpTemplateResolver)
+
+    val cssTemplateResolver = FileTemplateResolver()
+
+    cssTemplateResolver.characterEncoding = StandardCharsets.UTF_8.name()
+    cssTemplateResolver.templateMode = TemplateMode.CSS
+    cssTemplateResolver.prefix = templateDirectory
+    cssTemplateResolver.suffix = ".css"
+
+    val cssTemplateEngine = TemplateEngine()
+    cssTemplateEngine.addTemplateResolver(cssTemplateResolver)
+
+    val cssGenerator = CSSGenerator(targetDirectory,model)
+
+    cssGenerator.generate(cssTemplateEngine)
 
     val indexGenerator = IndexPageGenerator(targetDirectory,model)
 
-    indexGenerator.generate(templateEngine)
+    indexGenerator.generate(httpTemplateEngine)
 
     val nodeTypeIndexPageGenerator = NodeTypeIndexPageGenerator(targetDirectory,model)
 
     for (type in model.nodeTypeSet) {
-        nodeTypeIndexPageGenerator.generate(templateEngine, type)
+        nodeTypeIndexPageGenerator.generate(httpTemplateEngine, type)
     }
 
     val nodePagesGenerator = NodePagesGenerator(targetDirectory,model)
 
-    nodePagesGenerator.generate(templateEngine)
+    nodePagesGenerator.generate(httpTemplateEngine)
 
     val starterGenerator = StarterIndexPageGenerator(targetDirectory,model)
 
-    starterGenerator.generate(templateEngine)
+    starterGenerator.generate(httpTemplateEngine)
 
     val leaveGenerator = LeaveIndexPageGenerator(targetDirectory,model)
 
-    leaveGenerator.generate(templateEngine)
+    leaveGenerator.generate(httpTemplateEngine)
 
     val mostCausesGenerator = MostCausesIndexPageGenerator(targetDirectory,model)
 
-    mostCausesGenerator.generate(templateEngine)
+    mostCausesGenerator.generate(httpTemplateEngine)
 
     val mostConsequencesGenerator = MostConsequencesIndexPageGenerator(targetDirectory,model)
 
-    mostConsequencesGenerator.generate(templateEngine)
+    mostConsequencesGenerator.generate(httpTemplateEngine)
 
     val mostConnnectedGenerator = MostConnectedIndexPageGenerator(targetDirectory,model)
 
-    mostConnnectedGenerator.generate(templateEngine)
+    mostConnnectedGenerator.generate(httpTemplateEngine)
 
     val orphanGenerator = OrphanIndexPageGenerator(targetDirectory,model)
 
-    orphanGenerator.generate(templateEngine)
+    orphanGenerator.generate(httpTemplateEngine)
 
     logger.info("Done.")
 }
