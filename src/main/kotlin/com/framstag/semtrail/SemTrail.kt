@@ -112,5 +112,9 @@ fun main(args : Array<String>) {
 
     orphanGenerator.generate(httpTemplateEngine)
 
+    val noDocGenerator = NoDocIndexPageGenerator(targetDirectory,model)
+
+    noDocGenerator.generate(httpTemplateEngine)
+
     logger.info("Done.")
 }
