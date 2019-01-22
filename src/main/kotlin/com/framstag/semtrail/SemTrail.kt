@@ -74,10 +74,6 @@ fun main(args : Array<String>) {
 
     nodePagesGenerator.generate(templateEngine)
 
-    val orphanGenerator = OrphanIndexPageGenerator(targetDirectory,model)
-
-    orphanGenerator.generate(templateEngine)
-
     val starterGenerator = StarterIndexPageGenerator(targetDirectory,model)
 
     starterGenerator.generate(templateEngine)
@@ -85,6 +81,22 @@ fun main(args : Array<String>) {
     val leaveGenerator = LeaveIndexPageGenerator(targetDirectory,model)
 
     leaveGenerator.generate(templateEngine)
+
+    val mostCausesGenerator = MostCausesIndexPageGenerator(targetDirectory,model)
+
+    mostCausesGenerator.generate(templateEngine)
+
+    val mostConsequencesGenerator = MostConsequencesIndexPageGenerator(targetDirectory,model)
+
+    mostConsequencesGenerator.generate(templateEngine)
+
+    val mostConnnectedGenerator = MostConnectedIndexPageGenerator(targetDirectory,model)
+
+    mostConnnectedGenerator.generate(templateEngine)
+
+    val orphanGenerator = OrphanIndexPageGenerator(targetDirectory,model)
+
+    orphanGenerator.generate(templateEngine)
 
     logger.info("Done.")
 }
