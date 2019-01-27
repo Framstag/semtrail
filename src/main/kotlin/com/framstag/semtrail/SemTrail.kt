@@ -78,6 +78,10 @@ fun main(args : Array<String>) {
 
     indexGenerator.generate(httpTemplateEngine)
 
+    val indexImageGenerator = IndexImagePageGenerator(targetDirectory,model)
+
+    indexImageGenerator.generate(httpTemplateEngine)
+
     val nodeTypeIndexPageGenerator = NodeTypeIndexPageGenerator(targetDirectory,model)
 
     for (type in model.nodeTypeSet) {
