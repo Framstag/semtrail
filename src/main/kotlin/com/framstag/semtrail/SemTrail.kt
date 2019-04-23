@@ -6,6 +6,7 @@ import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.FileTemplateResolver
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.nio.file.Paths
 
 val logger = KotlinLogging.logger("main")
 
@@ -17,9 +18,12 @@ fun main(args : Array<String>) {
 
     val filename = args[0]
     val templateDirectoryArg = args[1]
-    val targetDirectory = args[2]
+    val targetDirectoryArg = args[2]
 
     val templateDirectoryFile = File(templateDirectoryArg)
+    val targetDirectoryFile = File(targetDirectoryArg)
+
+    // Check template directory
 
     if (!templateDirectoryFile.exists()) {
         logger.error("Template directory '$templateDirectoryArg' does not exist!")
@@ -33,6 +37,26 @@ fun main(args : Array<String>) {
 
     val templateDirectory =
         if (templateDirectoryFile.path.endsWith(File.separator)) templateDirectoryFile.path else templateDirectoryFile.path + File.separator
+
+    // Check target directory
+
+    if (!targetDirectoryFile.exists()) {
+        logger.warn("Creating target directory '$targetDirectoryArg'...")
+
+        targetDirectoryFile.mkdirs()
+    }
+
+    val targetDirectoryNodesFile = Paths.get(targetDirectoryFile.toString(), "nodes").toFile()
+
+    if (!targetDirectoryNodesFile.exists()) {
+        logger.warn("Creating target directory '$targetDirectoryNodesFile'...")
+        targetDirectoryNodesFile.mkdirs()
+    }
+
+    val targetDirectory =
+        if (targetDirectoryFile.path.endsWith(File.separator)) targetDirectoryFile.path else targetDirectoryFile.path + File.separator
+
+    // Loading definition file...
 
     logger.info("Loading SemTrail file '$filename'...")
 
