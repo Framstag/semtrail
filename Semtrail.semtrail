@@ -1,0 +1,143 @@
+(semtrail "Semtrail"
+
+  (config {
+    :nodeTypes (
+      :assumption
+      :fact
+      :requirement
+      :solution
+      :technology
+    )
+
+    :edgeTypes (
+      :derivation
+      :consequence
+      :decision
+    )
+
+    :nodeTypeNames {
+        :assumption  "Asumption"
+        :fact        "Fact"
+        :requirement "Requirement"
+        :solution    "Solution"
+        :technology  "Technology"
+    }
+
+    :edgeTypeNames {
+      :derivation  "Derivation"
+      :consequence "Consequence"
+      :decision    "Decision"
+    }
+  })
+
+  ;; First Level Requirements
+
+  (node "Simple" {
+    :type :requirement
+    :doc "The solution must be simple"
+  })
+
+  (node "High reuse" {
+    :type :requirement
+    :doc "The solution must maximise reuse"
+  })
+
+  (node "Clojure syntax" {
+    :type :requirement
+    :doc "We want a Clojure-like syntax for the DSL"
+  })
+
+  (node "Maintainability" {
+    :type :requirement
+    :doc "We want to be able to reproduce and debug problems of users"
+  })
+
+  (node "Simple hosting" {
+    :type :requirement
+    :doc "It should be simple for the users to show the resulting web pages"
+  })
+
+  (node "Runs everywhere" {
+    :type :requirement
+    :doc "Should work on any developer computer"
+  })
+
+  (node "Easy to build" {
+    :type :requirement
+    :doc "Should be easy to build"
+  })
+
+  ;; Facts
+
+  (node "Known programming languages" {
+    :type :fact
+    :doc "We have some knowledge in Kotlin but not much in Clojure"
+  })
+
+  ;; Runtime
+
+  (node "Logging" {
+    :type :solution
+  })
+
+  (node "Container" {
+    :type :solution
+  })
+
+  (node "Docker" {
+    :type :technology
+    :doc "Use Docker with NGINX to host the resulting web pages"
+  })
+
+  (node "NGINX" {
+    :type :technology
+    :doc "Use Docker with NGINX to host the resulting web pages"
+  })
+
+  (edge "Maintainability" :derivation "Logging")
+  (edge "Simple hosting" :derivation "Container")
+  (edge "Container" :decision "Docker")
+  (edge "Container" :decision "NGINX")
+
+  ;; Frameworks and tools
+
+  (node "Logging-Framework" {
+    :type :technology
+    :doc "Concrete framework to implement logging"
+  })
+
+  (node "Build system" {
+    :type :solution
+    :doc "Simplifies building software"
+  })
+
+  (edge "Logging" :derivation "Logging-Framework")
+  (edge "Easy to build" :derivation "Build System")
+
+  ;; Technologie
+
+  (node "JVM" {
+    :type :technology
+  })
+
+  (node "Java" {
+    :type :technology
+    :doc "Comon JVM language"
+  })
+
+  (node "Maven" {
+    :type :technology
+    :doc "Common build system"
+  })
+
+  (node "Kotlin" {
+    :type :technology
+    :doc "New programming language on top of JVM"
+  })
+
+  (edge "Runs everywhere" :decision "JVM")
+
+  (edge "JVM" :decision "Kotlin")
+
+  (edge "Known programming languages" :derivation "Kotlin")
+)
