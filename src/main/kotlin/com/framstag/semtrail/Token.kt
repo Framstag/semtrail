@@ -1,7 +1,5 @@
 package com.framstag.semtrail
 
-
-
 class Token(val type: TokenType,
             val value: String,
             val column: Int,
@@ -11,7 +9,7 @@ class Token(val type: TokenType,
         return if (value.isEmpty()) {
             type.toString()
         } else {
-            "'${value}' (${type})"
+            "'$value' ($type)"
         }
     }
 

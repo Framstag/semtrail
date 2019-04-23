@@ -6,7 +6,6 @@ import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.FileTemplateResolver
 import java.io.File
 import java.nio.charset.StandardCharsets
-import javax.swing.text.html.CSS
 
 val logger = KotlinLogging.logger("main")
 

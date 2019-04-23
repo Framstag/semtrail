@@ -2,12 +2,6 @@ package com.framstag.semtrail
 
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
-import org.thymeleaf.templatemode.TemplateMode
-import org.thymeleaf.templateresolver.FileTemplateResolver
-import java.io.File
-import java.nio.charset.Charset
-import java.nio.charset.CharsetEncoder
-import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 
 class CSSGenerator(private val targetDirectory: String, private val model: Model) {
@@ -17,7 +11,7 @@ class CSSGenerator(private val targetDirectory: String, private val model: Model
 
         context.setVariable("model",model)
 
-        val file = File(Paths.get(targetDirectory, "standard.css").toUri())
+        val file = Paths.get(targetDirectory, "standard.css").toFile()
 
         val writer = file.printWriter()
 

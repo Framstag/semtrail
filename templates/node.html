@@ -63,7 +63,7 @@
             // create an array with nodes
             var nodes = new vis.DataSet([
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
-                {id: [[${edge.from.hashCode()}]], label: [[${edge.from.name}]], color: 'wheat'},
+                {id: [[${edge.from.hashCode()}]], label: [[${edge.from.name}]], color: 'wheat°'},
                 /*[/]*/
                 {id: [[${node.hashCode()}]], label: [[${node.name}]]},
                 /*[# th:each="edge : ${node.toNodes.values}"]*/
