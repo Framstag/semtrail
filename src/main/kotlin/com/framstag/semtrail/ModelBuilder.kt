@@ -6,7 +6,7 @@ class ModelBuilder(private val model: Model) : ASTCallback {
     companion object : KLogging()
 
     override fun onSemtrailName(name: String) {
-        logger.info("SemTrail description '$name'")
+        logger.debug("SemTrail description '$name'")
 
         model.name = name
     }
@@ -28,7 +28,7 @@ class ModelBuilder(private val model: Model) : ASTCallback {
     }
 
     override fun onNode(name: String) {
-        logger.info("Node '$name'")
+        logger.debug("Node '$name'")
 
         if (model.hasNode(name)) {
             logger.error("Node '$name' already exists")
@@ -50,7 +50,7 @@ class ModelBuilder(private val model: Model) : ASTCallback {
     }
 
     override fun onEdge(from: String, type: String, to: String) {
-        logger.info("Edge '$from' $type '$to'")
+        logger.debug("Edge '$from' $type '$to'")
 
         val fromNode=model.getOrCreateNode(from)
         val toNode= model.getOrCreateNode(to)
