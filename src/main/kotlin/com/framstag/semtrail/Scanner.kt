@@ -36,10 +36,9 @@ class Scanner(filename: String) {
         }
     }
 
-    fun nextToken():Boolean {
-        // skip whitespace and comments
+    private fun consumeWhiteSpaceAndComments() {
         while (!eol() &&
-            (nextChar().isWhitespace() || nextChar()==';')) {
+                (nextChar().isWhitespace() || nextChar()==';')) {
             if (nextChar().isWhitespace()) {
                 advance()
             }
@@ -49,97 +48,130 @@ class Scanner(filename: String) {
                 }
             }
         }
+    }
+
+    private fun consumeLeftBracket():Boolean {
+        token = Token(TokenType.LEFT_BRACKET,"(",column,row)
+        advance()
+
+        return true
+    }
+
+    private fun consumeRightBracket():Boolean {
+        token = Token(TokenType.RIGHT_BRACKET,")",column,row)
+        advance()
+
+        return true
+    }
+
+    private fun consumeLeftCurlyBracket():Boolean {
+        token = Token(TokenType.LEFT_CURLY_BRACKET,"{",column,row)
+        advance()
+
+        return true
+    }
+
+    private fun consumeRightCurlyBracket():Boolean {
+        token = Token(TokenType.RIGHT_CURLY_BRACKET,"}",column,row)
+        advance()
+
+        return true
+    }
+
+    private fun consumeAtom():Boolean {
+        val startPos=nextPos
+
+        advance()
+
+        while (!nextChar().isWhitespace() &&
+                nextChar()!='(' &&
+                nextChar()!=')' &&
+                nextChar()!='{' &&
+                nextChar()!='}' &&
+                nextChar()!=';') {
+            advance()
+        }
+
+        token = Token(TokenType.ATOM,buffer.substring(startPos,nextPos),column,row)
+
+        return true
+    }
+
+    private fun consumeString():Boolean {
+        advance()
+
+        val startPos=nextPos
+
+        while (!eol() && nextChar()!='"') {
+            advance()
+        }
 
         if (eol()) {
-            token = Token(TokenType.EOL,"",column,row)
+            // TODO: Error
             return false
         }
 
-        // Brackets
-        if (nextChar()=='(') {
-            token = Token(TokenType.LEFT_BRACKET,"(",column,row)
-            advance()
+        advance()
 
-            return true
-        }
-        else if (nextChar()==')') {
-            token = Token(TokenType.RIGHT_BRACKET,")",column,row)
-            advance()
+        token = Token(TokenType.STRING,buffer.substring(startPos,nextPos-1),column,row)
 
-            return true
-        }
-        else if (nextChar()=='{') {
-            token = Token(TokenType.LEFT_CURLY_BRACKET,"{",column,row)
-            advance()
+        return true
+    }
 
-            return true
-        }
-        else if (nextChar()=='}') {
-            token = Token(TokenType.RIGHT_CURLY_BRACKET,"}",column,row)
-            advance()
+    private fun consumeSymbol():Boolean {
+        val startPos=nextPos
 
-            return true
-        }
-
-        // Atom
-        else if (nextChar()==':') {
-            val startPos=nextPos
-
-            advance()
-
-            while (!nextChar().isWhitespace() &&
-                    nextChar()!='(' &&
-                    nextChar()!=')' &&
-                    nextChar()!='{' &&
-                    nextChar()!='}' &&
-                    nextChar()!=';') {
-                advance()
-            }
-
-            token = Token(TokenType.ATOM,buffer.substring(startPos,nextPos),column,row)
-
-            return true
-        }
-
-        // String
-        else if (nextChar()=='"') {
-            advance()
-
-            val startPos=nextPos
-
-            while (!eol() && nextChar()!='"') {
-                advance()
-            }
-
-            if (eol()) {
-                // TODO: Error
-                return false
-            }
-
-            advance()
-
-            token = Token(TokenType.STRING,buffer.substring(startPos,nextPos-1),column,row)
-
-            return true
-        }
-
-        // Symbol
-        else {
-            val startPos=nextPos
-
-            while (!eol() &&
+        while (!eol() &&
                 !nextChar().isWhitespace() &&
                 nextChar()!='(' &&
                 nextChar()!=')' &&
                 nextChar()!='{' &&
                 nextChar()!='}' &&
                 nextChar()!=';') {
-                advance()
+            advance()
+        }
+
+        token = Token(TokenType.SYMBOL,buffer.substring(startPos,nextPos),column,row)
+
+        return true
+    }
+
+    fun nextToken():Boolean {
+        consumeWhiteSpaceAndComments()
+
+        if (eol()) {
+            token = Token(TokenType.EOL,"",column,row)
+            return false
+        }
+
+        when {
+            nextChar()=='(' -> {
+                return consumeLeftBracket()
+            }
+            nextChar()==')' -> {
+                return consumeRightBracket()
+            }
+            nextChar()=='{' -> {
+                return consumeLeftCurlyBracket()
+            }
+            nextChar()=='}' -> {
+                return consumeRightCurlyBracket()
             }
 
-            token = Token(TokenType.SYMBOL,buffer.substring(startPos,nextPos),column,row)
+            // Atom
+            nextChar()==':' -> {
+                return consumeAtom()
+            }
 
-            return true
+            // String
+            nextChar()=='"' -> {
+                return consumeString()
+            }
+
+            // Symbol
+            else -> {
+                return consumeSymbol()
+            }
         }
     }
 }
