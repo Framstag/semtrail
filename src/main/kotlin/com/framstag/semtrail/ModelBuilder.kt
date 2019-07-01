@@ -65,6 +65,18 @@ class ModelBuilder(private val model: Model) : ASTCallback {
 
     }
 
+    override fun onEdgeAttribute(from: String, to: String, attributeName: String, attributeValue: String) {
+        val fromNode=model.getNode(from)
+
+        val edge = fromNode?.getEdge(to)
+
+        edge?.apply {
+            when (attributeName) {
+                ":doc" -> doc = attributeValue
+            }
+        }
+    }
+
     override fun isValidNodeType(nodeType: String): Boolean {
         return model.nodeTypeSet.contains(nodeType)
     }

@@ -15,6 +15,8 @@ interface ASTCallback {
 
     fun onEdge(from: String, type: String, to: String)
 
+    fun onEdgeAttribute(from: String, to: String, attributeName: String, attributeValue: String)
+
     fun isValidNodeType(nodeType: String):Boolean
     fun isValidEdgeType(edgeType: String):Boolean
 }

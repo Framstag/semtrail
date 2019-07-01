@@ -372,6 +372,35 @@ class Parser(private val scanner: Scanner,
 
             while (scanner.token.type!=TokenType.EOL &&
                 scanner.token.type!=TokenType.RIGHT_CURLY_BRACKET) {
+
+                if (scanner.token.type != TokenType.ATOM) {
+                    expectedTokenType(scanner.token, "attribute name", TokenType.ATOM)
+                    return false
+                }
+
+                val knownAttribute = when (scanner.token.value) {
+                    ":doc" -> true
+                    else -> false
+                }
+
+                val attributeName = scanner.token
+
+                if (!knownAttribute) {
+                    semanticError(scanner.token, "not a known edge attribute")
+                    return false
+                }
+
+                scanner.nextToken()
+
+                if (scanner.token.type != TokenType.STRING && scanner.token.type != TokenType.ATOM) {
+                    syntacticError(scanner.token, "Expected edge attribute value")
+                    return false
+                }
+
+                val attributeValue = scanner.token
+
+                callback.onEdgeAttribute(from, to, attributeName.value, attributeValue.value)
+
                 scanner.nextToken()
             }
 

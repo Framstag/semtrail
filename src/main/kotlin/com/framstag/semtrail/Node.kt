@@ -18,4 +18,8 @@ class Node(val name: String) {
     fun addOutgoingEdge(edge: Edge) {
         toNodes.put(edge.to.name,edge)
     }
+
+    fun getEdge(toName: String):Edge? {
+        return toNodes[toName]
+    }
 }

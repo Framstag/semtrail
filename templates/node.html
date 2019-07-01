@@ -39,6 +39,8 @@
                 [[${model.edgeTypeNames[edge.type]}]]
                 &#x2192;
                 [[${node.name}]]
+
+                <blockquote th:if="${edge.doc != ''}" th:text="${edge.doc}"></blockquote>
             </li>
         </ul>
 
@@ -52,6 +54,8 @@
                 &#x2192;
                 <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.to.name})}"
                    th:text="${edge.to.name}">Name</a>
+
+                <blockquote th:if="${edge.doc != ''}" th:text="${edge.doc}"></blockquote>
             </li>
         </ul>
 
