@@ -8,8 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../standard.css">
     <title th:text="|${model.nodeTypeNames[node.type]} '${node.name}'|"></title>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link href="https://unpkg.com/vis-network/standalone/umd/vis-network.min.css" rel="stylesheet" type="text/css" />
 
     <style type="text/css">
         #map {
@@ -20,10 +20,10 @@
 </head>
 
 <body>
-<div th:replace="header (title=|${model.nodeTypeNames[node.type]} '${node.name}'|,modelName=${model.name})"></div>
+<div th:replace="~{header (title=|${model.nodeTypeNames[node.type]} '${node.name}'|,modelName=${model.name})}"></div>
 
 <div id="content">
-    <div th:replace="navigation (rel='..')"></div>
+    <div th:replace="~{navigation (rel='..')}"></div>
 
     <main>
         <h1>Beschreibung</h1>
@@ -67,7 +67,7 @@
             // create an array with nodes
             var nodes = new vis.DataSet([
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
-                {id: [[${edge.from.hashCode()}]], label: [[${edge.from.name}]], color: 'wheat°'},
+                {id: [[${edge.from.hashCode()}]], label: [[${edge.from.name}]], color: 'wheat'},
                 /*[/]*/
                 {id: [[${node.hashCode()}]], label: [[${node.name}]]},
                 /*[# th:each="edge : ${node.toNodes.values}"]*/
@@ -109,7 +109,7 @@
     </div>
 </div>
 
-<div th:replace="footer"></div>
+<div th:replace="~{footer}"></div>
 
 </body>
 </html>

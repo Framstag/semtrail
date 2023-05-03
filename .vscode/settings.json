@@ -1,0 +1,28 @@
+{
+    "maven.terminal.customEnv": [
+        {
+            "environmentVariable": "JAVA_HOME",
+            "value": "/usr/lib/jvm/java-17-openjdk"
+        }
+    ],
+    "maven.terminal.favorites": [
+        {
+            "alias": "package",
+            "command": "package",
+            "debug": false
+        },
+        {
+            "alias": "clean package",
+            "command": "clean package",
+            "debug": false
+        },
+    ],
+    "sonarlint.connectedMode.project": {
+
+        "connectionId": "framstag",
+        "projectKey": "Framstag_semtrail"
+    },
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.format.settings.url": ".vscode/java-formatter.xml",
+    "maven.view": "hierarchical"
+}

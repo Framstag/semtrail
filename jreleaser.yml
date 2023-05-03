@@ -1,0 +1,50 @@
+project:
+  name: semtrail
+  description: SemTrail is a small project to generate a simple WebPage for a semantic graph defined by a small DSL file
+  longDescription: SemTrail is a small project to generate a simple WebPage for a semantic graph defined by a small DSL file
+  links:
+    homepage: https://github.com/Framstag/semtrail
+  authors:
+    - Tim Teulings
+  maintainers:
+    - Framstag
+  license: Apache-2.0
+  inceptionYear: 2019
+  stereotype: CLI
+  vendor: Framstag
+  java:
+    version: 17
+    groupId: com.framstag
+    artifactId: semtrail
+    mainClass: com.framstag.semtrail.SemTrailKt
+  tags:
+  snapshot:
+    fullChangelog: true
+    label: latest
+
+release:
+  github:
+    owner: Framstag
+    overwrite: true
+    issues:
+      enabled: true
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      contributors:
+        format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
+      extraProperties:
+        categorizeScopes: true
+
+assemble:
+  javaArchive:
+    acousticrules:
+      active: ALWAYS
+      formats: [ ZIP,TGZ ]
+      fileSets:
+        - input: '.'
+          includes: [ 'README.md', 'LICENSE', 'Semtrail.semtrail', 'Dockerfile', 'build-docker.sh', 'run-docker.sh' ]
+        - input: rules
+          output: rules
+      mainJar:
+        path: target/{{distributionName}}-jar-with-dependencies.jar

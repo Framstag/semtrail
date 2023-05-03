@@ -12,10 +12,10 @@
 
 <body>
 
-<div th:replace="header (title=${model.name},modelName=${model.name})"></div>
+<div th:replace="~{header (title=${model.name},modelName=${model.name})}"></div>
 
 <div id="content">
-    <div th:replace="navigation (rel='.')"></div>
+    <div th:replace="~{navigation (rel='.')}"></div>
 
     <main>
         <table>
@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div th:replace="footer"></div>
+<div th:replace="~{footer}"></div>
 
 </body>
 </html>

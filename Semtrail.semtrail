@@ -106,7 +106,7 @@
     :doc "Concrete framework to implement logging"
   })
 
-  (node "Build system" {
+  (node "Build System" {
     :type :solution
     :doc "Simplifies building software"
   })

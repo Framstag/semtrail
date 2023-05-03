@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "java",
+            "name": "AcousticRules (Java)",
+            "request": "launch",
+            "mainClass": "com.framstag.acousticrules.AcousticRules",
+            "projectName": "acousticrules",
+            "args": "--stopOnDuplicates @rules_import.options -q Java_QualityProfile.json -p prefix=Java Java_Rules1.json Java_Rules2.json"
+        },
+        {
+            "type": "java",
+            "name": "AcousticRules --help",
+            "request": "launch",
+            "mainClass": "com.framstag.acousticrules.AcousticRules",
+            "projectName": "acousticrules",
+            "args": "--help"
+        },
+        {
+            "type": "java",
+            "name": "AcousticRules --version",
+            "request": "launch",
+            "mainClass": "com.framstag.acousticrules.AcousticRules",
+            "projectName": "acousticrules",
+            "args": "--version"
+        }
+
+    ]
+}
