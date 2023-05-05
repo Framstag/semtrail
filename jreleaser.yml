@@ -43,7 +43,5 @@ assemble:
       fileSets:
         - input: '.'
           includes: [ 'README.md', 'LICENSE.txt', 'Semtrail.semtrail', 'Dockerfile', 'build-docker.sh', 'run-docker.sh' ]
-        - input: rules
-          output: rules
       mainJar:
         path: target/{{distributionName}}-jar-with-dependencies.jar
