@@ -17,7 +17,6 @@ project:
     groupId: com.framstag
     artifactId: semtrail
     mainClass: com.framstag.semtrail.SemTrailKt
-  tags:
   snapshot:
     fullChangelog: true
     label: latest
