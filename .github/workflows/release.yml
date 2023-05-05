@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: master
           fetch-depth: 0
 
       - name: Set up JDK 17
@@ -45,7 +45,7 @@ jobs:
           git config --global user.email "framstag@users.noreply.github.com"
           git config --global user.name "Tim Teulings"
           git commit -a -m "Releasing version $VERSION"
-          git push origin main
+          git push origin master
 
       - name: Build with maven
         run:  mvn -ntp --batch-mode --update-snapshots verify
@@ -57,7 +57,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: JReleaser assemble
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         uses: jreleaser/release-action@v2
         with:
           arguments: assemble
@@ -66,7 +66,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: JReleaser full-release
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         uses: jreleaser/release-action@v2
         with:
           arguments: full-release
@@ -82,10 +82,10 @@ jobs:
           git config --global user.email "framstag@users.noreply.github.com"
           git config --global user.name "Tim Teulings"
           git commit -a -m "Setting version to next snapshot version"
-          git push origin main
+          git push origin master
 
       - name: JReleaser upload output
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v3
         with:
           name: jreleaser-release
