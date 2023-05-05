@@ -38,12 +38,12 @@ release:
 
 assemble:
   javaArchive:
-    acousticrules:
+    semtrail:
       active: ALWAYS
       formats: [ ZIP,TGZ ]
       fileSets:
         - input: '.'
-          includes: [ 'README.md', 'LICENSE', 'Semtrail.semtrail', 'Dockerfile', 'build-docker.sh', 'run-docker.sh' ]
+          includes: [ 'README.md', 'LICENSE.txt', 'Semtrail.semtrail', 'Dockerfile', 'build-docker.sh', 'run-docker.sh' ]
         - input: rules
           output: rules
       mainJar:
