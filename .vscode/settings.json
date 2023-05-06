@@ -22,7 +22,8 @@
         "connectionId": "framstag",
         "projectKey": "Framstag_semtrail"
     },
-    "java.configuration.updateBuildConfiguration": "automatic",
     "java.format.settings.url": ".vscode/java-formatter.xml",
-    "maven.view": "hierarchical"
+    "cSpell.enableFiletypes": [
+        "kotlin"
+    ],
 }
