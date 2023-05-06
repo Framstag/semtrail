@@ -22,3 +22,7 @@
 
 # Default target directory
 site
+
+# Custom data
+
+/*.semtrail
