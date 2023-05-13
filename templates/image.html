@@ -38,6 +38,7 @@
                 {
                     id: [[${node.hashCode()}]],
                     label: [[${node.name}]],
+                    title:  [[${node.type}]],
                     color: [[${model.nodeTypeColors[node.type]}]]
                 },
                 /*[/]*/
@@ -51,7 +52,7 @@
                     from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
                     to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
                     arrows: 'to',
-                    title:  [[${edge.type}]], // [[${edge.type}]]
+                    title:  [[${edge.type}]],
                     color:  {
                         color: [[${model.edgeTypeColors[edge.type]}]]  // [[${edge.type}]]
                     }

@@ -179,12 +179,12 @@
 
   (edge "Maintainability" :derivation "Logging")
 
-  (node "JVM Language" {
+  (node "JVM language" {
     :type :concept
     :doc "Use of the JVM execution environment"
   })
 
-  (edge "JVM Language" :derivation "Runs everywhere")
+  (edge "Runs everywhere" :derivation "JVM language")
 
   (node "Container" {
     :type :concept
@@ -255,7 +255,7 @@
     :doc "Kotlin-specific loging framework based on slf4j"
   })
 
-  (edge "Logging" :decision "Kotlin-Logging")
+  (edge "Logging-Framework" :decision "Kotlin-Logging")
 
   (node "Kotlin" {
     :type :technology
@@ -263,4 +263,5 @@
   })
 
   (edge "Known programming languages" :decision "Kotlin")
+  (edge "JVM language" :decision "Kotlin")
 )

@@ -70,18 +70,21 @@
                 {
                     id: [[${edge.from.hashCode()}]],
                     label: [[${edge.from.name}]],
+                    title:  [[${edge.from.type}]],
                     color: [[${model.nodeTypeColors[edge.from.type]}]]
                 },
                 /*[/]*/
                 {
                     id: [[${node.hashCode()}]],
                      label: [[${node.name}]],
+                     title:  [[${node.type}]],
                      color: [[${model.nodeTypeColors[node.type]}]]
                 },
                 /*[# th:each="edge : ${node.toNodes.values}"]*/
                 {
                     id: [[${edge.to.hashCode()}]],
                     label: [[${edge.to.name}]],
+                    title:  [[${edge.to.type}]],
                     color: [[${model.nodeTypeColors[edge.to.type]}]]
                 },
                 /*[/]*/
