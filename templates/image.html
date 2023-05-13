@@ -35,7 +35,11 @@
             // create an array with nodes
             var nodes = new vis.DataSet([
                 /*[# th:each="node : ${nodes}"]*/
-                {id: [[${node.hashCode()}]], label: [[${node.name}]]},
+                {
+                    id: [[${node.hashCode()}]],
+                    label: [[${node.name}]],
+                    color: [[${model.nodeTypeColors[node.type]}]]
+                },
                 /*[/]*/
             ]);
 
@@ -43,7 +47,15 @@
             var edges = new vis.DataSet([
                 /*[# th:each="node : ${nodes}"]*/
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
-                {from: [[${edge.from.hashCode()}]], to: [[${edge.to.hashCode()}]], arrows:'to'},
+                {
+                    from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
+                    to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
+                    arrows: 'to',
+                    title:  [[${edge.type}]], // [[${edge.type}]]
+                    color:  {
+                        color: [[${model.edgeTypeColors[edge.type]}]]  // [[${edge.type}]]
+                    }
+                },
                 /*[/]*/
                 /*[/]*/
             ]);

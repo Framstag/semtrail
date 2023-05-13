@@ -23,8 +23,16 @@ class ModelBuilder(private val model: Model) : ASTCallback {
         model.nodeTypeNames[nodeType]=nodeTypeName
     }
 
+    override fun onConfigNodeTypeColor(nodeType: String, nodeTypeColor: String) {
+        model.nodeTypeColors[nodeType]=nodeTypeColor
+    }
+
     override fun onConfigEdgeTypeName(edgeType: String, edgeTypeName: String) {
         model.edgeTypeNames[edgeType]=edgeTypeName
+    }
+
+    override fun onConfigEdgeTypeColor(nodeType: String, edgeTypeColor: String) {
+        model.edgeTypeColors[nodeType]=edgeTypeColor
     }
 
     override fun onNode(name: String) {

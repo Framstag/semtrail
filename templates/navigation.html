@@ -6,7 +6,7 @@
         <li th:each="nodeType : ${model.nodeTypeSet}">
             <a href="/index.html"
                th:href="@{{path}/{type}_index.html(path=${rel},type=${#strings.replace(nodeType,':','')})}"
-               th:text="${#strings.replace(nodeType,':','')}">Type</a>
+               th:text="${model.nodeTypeNames[nodeType]}">Type</a>
         </li>
 
         <li><a href="/starter.html" th:href="@{{path}/starter.html(path=${rel})}">Starter</a></li>

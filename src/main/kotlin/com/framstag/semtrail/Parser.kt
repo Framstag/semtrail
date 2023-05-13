@@ -127,6 +127,8 @@ class Parser(private val scanner: Scanner,
                     ":edgeTypes" -> parseConfigEdgeTypes()
                     ":nodeTypeNames" -> parseConfigNodeTypeNames()
                     ":edgeTypeNames" -> parseConfigEdgeTypeNames()
+                    ":nodeTypeColors" -> parseConfigNodeTypeColors()
+                    ":edgeTypeColors" -> parseConfigEdgeTypeColors()
                     else -> {
                         semanticError(scanner.token,"'${scanner.token.value}' is not a known config attribute")
                         return false
@@ -253,6 +255,102 @@ class Parser(private val scanner: Scanner,
             val edgeTypeName = scanner.token.value
 
             callback.onConfigEdgeTypeName(edgeType,edgeTypeName)
+
+            scanner.nextToken()
+        }
+
+        if (scanner.token.type!=TokenType.RIGHT_CURLY_BRACKET) {
+            expectedTokenType(scanner.token,"}",TokenType.RIGHT_CURLY_BRACKET)
+            return false
+        }
+
+        scanner.nextToken()
+
+        return true
+    }
+
+    private fun parseConfigNodeTypeColors():Boolean {
+        scanner.nextToken()
+
+        if (scanner.token.type!=TokenType.LEFT_CURLY_BRACKET) {
+            expectedTokenType(scanner.token,"{", TokenType.LEFT_CURLY_BRACKET)
+            return false
+        }
+
+        scanner.nextToken()
+
+        while (scanner.token.type!=TokenType.EOL &&
+            scanner.token.type!=TokenType.RIGHT_CURLY_BRACKET) {
+
+            if (scanner.token.type!=TokenType.ATOM) {
+                expectedTokenType(scanner.token, "node type name", TokenType.ATOM)
+                return false
+            }
+
+            val nodeType = scanner.token.value
+
+            if (!callback.isValidNodeType(nodeType)) {
+                semanticError(scanner.token,"$nodeType is not a valid node type")
+            }
+
+            scanner.nextToken()
+
+            if (scanner.token.type!=TokenType.STRING) {
+                expectedTokenType(scanner.token,"node type name",TokenType.STRING)
+                return false
+            }
+
+            val nodeTypeColor = scanner.token.value
+
+            callback.onConfigNodeTypeColor(nodeType,nodeTypeColor)
+
+            scanner.nextToken()
+        }
+
+        if (scanner.token.type!=TokenType.RIGHT_CURLY_BRACKET) {
+            expectedTokenType(scanner.token,"}",TokenType.RIGHT_CURLY_BRACKET)
+            return false
+        }
+
+        scanner.nextToken()
+
+        return true
+    }
+
+    private fun parseConfigEdgeTypeColors():Boolean {
+        scanner.nextToken()
+
+        if (scanner.token.type!=TokenType.LEFT_CURLY_BRACKET) {
+            expectedTokenType(scanner.token,"{", TokenType.LEFT_CURLY_BRACKET)
+            return false
+        }
+
+        scanner.nextToken()
+
+        while (scanner.token.type!=TokenType.EOL &&
+            scanner.token.type!=TokenType.RIGHT_CURLY_BRACKET) {
+
+            if (scanner.token.type!=TokenType.ATOM) {
+                expectedTokenType(scanner.token, "edge type name", TokenType.ATOM)
+                return false
+            }
+
+            val edgeType = scanner.token.value
+
+            if (!callback.isValidEdgeType(edgeType)) {
+                semanticError(scanner.token,"$edgeType is not a valid edge type")
+            }
+
+            scanner.nextToken()
+
+            if (scanner.token.type!=TokenType.STRING) {
+                expectedTokenType(scanner.token,"edge type name",TokenType.STRING)
+                return false
+            }
+
+            val edgeTypeColor = scanner.token.value
+
+            callback.onConfigEdgeTypeColor(edgeType,edgeTypeColor)
 
             scanner.nextToken()
         }

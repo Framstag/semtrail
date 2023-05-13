@@ -7,7 +7,11 @@ interface ASTCallback {
     fun onConfigEdgeTypes(set: MutableSet<String>)
 
     fun onConfigNodeTypeName(nodeType: String, nodeTypeName: String)
+    fun onConfigNodeTypeColor(nodeType: String, nodeTypeColor: String)
+
     fun onConfigEdgeTypeName(edgeType: String, edgeTypeName: String)
+    fun onConfigEdgeTypeColor(nodeType: String, edgeTypeColor: String)
+
 
     fun onNode(name: String)
 

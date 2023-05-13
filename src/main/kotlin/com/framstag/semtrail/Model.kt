@@ -4,7 +4,10 @@ class Model {
     var name : String = ""
 
     var nodeTypeSet: MutableSet<String> = mutableSetOf()
+    var nodeTypeColors: MutableMap<String,String> = mutableMapOf()
+
     var nodeTypeNames: MutableMap<String,String> = mutableMapOf()
+    var edgeTypeColors: MutableMap<String,String> = mutableMapOf()
 
     var edgeTypeSet: MutableSet<String> = mutableSetOf()
     var edgeTypeNames: MutableMap<String,String> = mutableMapOf()
