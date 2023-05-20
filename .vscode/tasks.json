@@ -6,8 +6,11 @@
         {
             "label": "Generate Semtrail pages",
             "type": "shell",
-            "command": "java -jar target/semtrail-jar-with-dependencies.jar Semtrail.semtrail templates site",
-            "problemMatcher": []
+            "command": "${config:kotlin.java.home}/bin/java -jar target/semtrail-jar-with-dependencies.jar Semtrail.semtrail templates site",
+            "problemMatcher": [],
+            "linux": {
+
+            }
         }
     ]
 }

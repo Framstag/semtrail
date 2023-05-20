@@ -19,25 +19,25 @@
     )
 
     :nodeTypeNames {
-        :general-condition      "General condition"
-        :functional-requirement "Functional requirement"
-        :quality-attribute      "Quality attribute"
-        :assumption             "Asumption"
-        :fact                   "Fact"
-        :concept                "Concept"
-        :technology             "Technology"
+      :general-condition      "General condition"
+      :functional-requirement "Functional requirement"
+      :quality-attribute      "Quality attribute"
+      :assumption             "Asumption"
+      :fact                   "Fact"
+      :concept                "Concept"
+      :technology             "Technology"
     }
 
     ;; See https://html-color.codes/
 
     :nodeTypeColors {
-        :general-condition      "#cccccc" ;; grey
-        :functional-requirement "#cccc00" ;; yellow
-        :quality-attribute      "#ee82ee" ;; violett
-        :assumption             "#ff5349" ;; red
-        :fact                   "#32cd32" ;; green
-        :concept                "#f4a460" ;; brown
-        :technology             "#00bfff" ;; blue
+      :general-condition      "#cccccc" ;; grey
+      :functional-requirement "#cccc00" ;; yellow
+      :quality-attribute      "#ee82ee" ;; violett
+      :assumption             "#ff5349" ;; red
+      :fact                   "#32cd32" ;; green
+      :concept                "#f4a460" ;; brown
+      :technology             "#00bfff" ;; blue
     }
 
     :edgeTypeNames {
@@ -47,11 +47,11 @@
       :option      "Option"
     }
 
-        :edgeTypeColors {
-        :consequence "#adff2f" ;; light green
-        :decision    "#32cd32" ;; dark green
-        :derivation  "#ffa500" ;; orange
-        :option      "#cccccc" ;; grey
+    :edgeTypeColors {
+      :consequence "#adff2f" ;; light green
+      :decision    "#32cd32" ;; dark green
+      :derivation  "#ffa500" ;; orange
+      :option      "#cccccc" ;; grey
     }
   })
 

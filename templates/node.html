@@ -9,7 +9,6 @@
     <title th:text="|${model.nodeTypeNames[node.type]} '${node.name}'|"></title>
 
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <link href="https://unpkg.com/vis-network/standalone/umd/vis-network.min.css" rel="stylesheet" type="text/css" />
 
     <style type="text/css">
         #map {
@@ -33,7 +32,7 @@
 
         <ul>
             <li th:each="edge : ${node.fromNodes.values}">
-                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.from.name})}"
+                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.from.hashCode})}"
                    th:text="${edge.from.name}">Name</a>
                 --
                 [[${model.edgeTypeNames[edge.type]}]]
@@ -52,7 +51,7 @@
                 --
                 [[${model.edgeTypeNames[edge.type]}]]
                 &#x2192;
-                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.to.name})}"
+                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.to.hashCode})}"
                    th:text="${edge.to.name}">Name</a>
 
                 <blockquote th:if="${edge.doc != ''}" th:text="${edge.doc}"></blockquote>
@@ -70,21 +69,26 @@
                 {
                     id: [[${edge.from.hashCode()}]],
                     label: [[${edge.from.name}]],
-                    title:  [[${edge.from.type}]],
+                    title:  [[${model.nodeTypeNames[edge.from.type]}]],
                     color: [[${model.nodeTypeColors[edge.from.type]}]]
                 },
                 /*[/]*/
                 {
                     id: [[${node.hashCode()}]],
                      label: [[${node.name}]],
-                     title:  [[${node.type}]],
-                     color: [[${model.nodeTypeColors[node.type]}]]
+                     title:  [[${model.nodeTypeNames[node.type]}]],
+                     color: [[${model.nodeTypeColors[node.type]}]],
+                     borderWidth: 4,
+                     fixed: {
+                        x: true,
+                        y: true
+                     }
                 },
                 /*[# th:each="edge : ${node.toNodes.values}"]*/
                 {
                     id: [[${edge.to.hashCode()}]],
                     label: [[${edge.to.name}]],
-                    title:  [[${edge.to.type}]],
+                    title:  [[${model.nodeTypeNames[edge.to.type]}]],
                     color: [[${model.nodeTypeColors[edge.to.type]}]]
                 },
                 /*[/]*/
@@ -97,7 +101,7 @@
                     from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
                     to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
                     arrows: 'to',
-                    title:  [[${edge.type}]], // [[${edge.type}]]
+                    title:  [[${model.edgeTypeNames[edge.type]}]], // [[${edge.type}]]
                     color: {
                         color: [[${model.edgeTypeColors[edge.type]}]]
                     }
@@ -108,7 +112,7 @@
                     from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
                     to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
                     arrows: 'to',
-                    title:  [[${edge.type}]], // [[${edge.type}]]
+                    title:  [[${model.edgeTypeNames[edge.type]}]], // [[${edge.type}]]
                     color: {
                         color: [[${model.edgeTypeColors[edge.type]}]]
                     }

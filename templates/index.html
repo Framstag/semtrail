@@ -19,6 +19,7 @@
 
     <main>
         <table>
+            <caption>Overview of elements</caption>
             <thead>
             <tr>
                 <th>Name</th>
@@ -29,7 +30,11 @@
 
             <tbody>
             <tr th:each="node : ${nodes}">
-                <td><a href="nodes/Name.html" th:href="@{nodes/{name}.html(name=${node.name})}" th:text="${node.name}">Name</a>
+                <td>
+                    <a
+                     href="nodes/Name.html"
+                     th:href="@{nodes/{name}.html(name=${node.hashCode})}"
+                     th:text="${node.name}">Name</a>
                 </td>
                 <td th:text="${model.nodeTypeNames[node.type]}">Type</td>
                 <td th:text="${node.doc}">Doc</td>

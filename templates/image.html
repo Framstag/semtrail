@@ -9,8 +9,7 @@
     <link rel="stylesheet" type="text/css" href="standard.css">
     <title th:text="${model.name}"></title>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
     <style type="text/css">
         #map {
@@ -38,7 +37,7 @@
                 {
                     id: [[${node.hashCode()}]],
                     label: [[${node.name}]],
-                    title:  [[${node.type}]],
+                    title:  [[${model.nodeTypeNames[node.type]}]],
                     color: [[${model.nodeTypeColors[node.type]}]]
                 },
                 /*[/]*/
@@ -52,7 +51,7 @@
                     from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
                     to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
                     arrows: 'to',
-                    title:  [[${edge.type}]],
+                    title:  [[${model.edgeTypeNames[edge.type]}]],
                     color:  {
                         color: [[${model.edgeTypeColors[edge.type]}]]  // [[${edge.type}]]
                     }

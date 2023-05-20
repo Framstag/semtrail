@@ -14,7 +14,7 @@ class NodePagesGenerator(private val targetDirectory: String, private val model:
             context.setVariable("model",model)
             context.setVariable("node",node)
 
-            val file = Paths.get(targetDirectory, "nodes", "${node.name}.html").toFile()
+            val file = Paths.get(targetDirectory, "nodes", "${node.hashCode()}.html").toFile()
 
             val writer = file.printWriter()
 
