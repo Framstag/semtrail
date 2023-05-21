@@ -1,4 +1,4 @@
-FROM maven:latest AS builder
+FROM docker.io/maven:latest AS builder
 
 RUN mkdir /work
 COPY src/ /work/src
@@ -10,10 +10,10 @@ RUN mkdir /work/site/nodes
 WORKDIR /work
 RUN ls -lR /work
 
-RUN mvn compile assembly:single
+RUN mvn package
 
-RUN java -jar target/semtrail-jar-with-dependencies.jar Architektur.semtrail templates site
+RUN java -jar target/semtrail-jar-with-dependencies.jar Semtrail.semtrail templates site
 RUN ls -lR /work/site
 
-FROM nginx:latest
+FROM docker.io/nginx:latest
 COPY --from=builder /work/site/ /usr/share/nginx/html/

@@ -110,3 +110,27 @@ The Model class has the following attributes:
 ## Syntax of *.semtrail files
 
 TODO
+
+## Simple Docker Image for hosting the generation result
+
+The repository contains a simple Dockerfile as boiler plate example for
+hosting the generated static web pages using nginx. This is not a production
+ready example, only a simple show cases for tests. Make sure that you
+host static content with the base images you trust.
+
+Build the docker container:
+
+```sh
+./build_docker.sh
+```
+
+This copies the relevant files in to a maven-based base Image (maven:latest from docker.io), starts a maven build and generate the static pages for Semtrail.semtrail.
+
+Afterwards it creates a nginx based image (`framstag/semtrail:latest`) with the above generated static content to serve.
+
+Running the image:
+
+```sh
+./run_docker.sh
+```
+This runs the nginx in the resulting Docker image under localhost:8080
