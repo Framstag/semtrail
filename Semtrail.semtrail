@@ -1,7 +1,7 @@
 (semtrail "Semtrail"
 
   (config {
-    :nodeTypes (
+    :nodeTypes '(
       :general-condition
       :functional-requirement
       :quality-attribute
@@ -11,7 +11,7 @@
       :technology
     )
 
-    :edgeTypes (
+    :edgeTypes '(
       :consequence
       :decision
       :derivation

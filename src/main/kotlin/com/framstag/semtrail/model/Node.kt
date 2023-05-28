@@ -1,4 +1,4 @@
-package com.framstag.semtrail
+package com.framstag.semtrail.model
 
 class Node(val name: String) {
     val fromNodes : MutableMap<String, Edge> = mutableMapOf()
@@ -19,7 +19,7 @@ class Node(val name: String) {
         toNodes.put(edge.to.name,edge)
     }
 
-    fun getEdge(toName: String):Edge? {
+    fun getEdge(toName: String): Edge? {
         return toNodes[toName]
     }
 }

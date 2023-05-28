@@ -1,4 +1,4 @@
-package com.framstag.semtrail
+package com.framstag.semtrail.model
 
 class Model {
     var name : String = ""
@@ -11,7 +11,7 @@ class Model {
     var edgeTypeNames: MutableMap<String,String> = mutableMapOf()
     var edgeTypeColors: MutableMap<String,String> = mutableMapOf()
 
-    val nodeMap : MutableMap<String,Node> = mutableMapOf()
+    val nodeMap : MutableMap<String, Node> = mutableMapOf()
 
     fun hasNode(name: String):Boolean {
         return nodeMap.contains(name)

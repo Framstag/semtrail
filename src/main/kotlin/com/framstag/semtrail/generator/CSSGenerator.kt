@@ -1,5 +1,6 @@
-package com.framstag.semtrail
+package com.framstag.semtrail.generator
 
+import com.framstag.semtrail.model.Model
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import java.nio.file.Paths

@@ -1,5 +1,9 @@
 package com.framstag.semtrail
 
+import com.framstag.semtrail.astparser.*
+import com.framstag.semtrail.generator.*
+import com.framstag.semtrail.model.ASTModelBuilder
+import com.framstag.semtrail.model.Model
 import mu.KotlinLogging
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
@@ -62,14 +66,59 @@ fun main(args : Array<String>) {
 
     val scanner = Scanner(args[0])
     val model = Model()
-    val modelBuilder = ModelBuilder(model)
-    val parser = Parser(scanner, modelBuilder)
 
-    if (!parser.parse()) {
-        logger.error("Error while parsing file!")
+    val parser = ASTParser(scanner)
 
+    logger.info("Parsing to AST...")
+    val functionCall = parser.parse()
+    logger.info("Parsing to AST done.")
+
+    if (functionCall != null) {
+        logger.info("OK")
+    }
+    else {
+        logger.info("ERROR")
         return
     }
+
+    val modelBuilder = ASTModelBuilder(model)
+    val appLookup = LookupContext()
+    val semtrailLookup = LookupContext(appLookup)
+
+    appLookup.addFunction(
+        FunctionDefinition(
+            "semtrail",
+            modelBuilder::onSemtrail,
+            1,
+            true,
+            semtrailLookup
+        )
+    )
+    semtrailLookup.addFunction(
+        FunctionDefinition(
+            "config",
+            modelBuilder::onConfig,
+            1
+        )
+    )
+    semtrailLookup.addFunction(
+        FunctionDefinition(
+            "node",
+            modelBuilder::onNode,
+            2
+        )
+    )
+    semtrailLookup.addFunction(
+        FunctionDefinition(
+            "edge",
+            modelBuilder::onEdge,
+            3
+        )
+    )
+
+    val executor = Executor()
+
+    executor.evaluate(functionCall, appLookup)
 
     logger.info("Generating web page based on templates in directory '$templateDirectory' to directory '$targetDirectory'...")
 

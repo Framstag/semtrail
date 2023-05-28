@@ -78,6 +78,13 @@ class Scanner(filename: String) {
         return true
     }
 
+    private fun consumeQuote():Boolean {
+        token = Token(TokenType.QUOTE,"'",column,row)
+        advance()
+
+        return true
+    }
+
     private fun consumeAtom():Boolean {
         val startPos=nextPos
 
@@ -156,6 +163,9 @@ class Scanner(filename: String) {
             }
             nextChar()=='}' -> {
                 return consumeRightCurlyBracket()
+            }
+            nextChar()=='\'' -> {
+                return consumeQuote()
             }
 
             // Atom

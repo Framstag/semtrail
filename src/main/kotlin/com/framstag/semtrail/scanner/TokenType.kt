@@ -5,6 +5,7 @@ enum class TokenType {
     RIGHT_BRACKET,
     LEFT_CURLY_BRACKET,
     RIGHT_CURLY_BRACKET,
+    QUOTE,
     SYMBOL,
     ATOM,
     STRING,
