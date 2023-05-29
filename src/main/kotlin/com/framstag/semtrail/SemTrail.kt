@@ -14,6 +14,51 @@ import java.nio.file.Paths
 
 val logger = KotlinLogging.logger("main")
 
+fun createApplicationContext(modelBuilder: ASTModelBuilder):LookupContext {
+    val appLookup = LookupContext()
+    val semtrailLookup = LookupContext(appLookup)
+
+    appLookup.addFunction(
+        FunctionDefinition(
+            "semtrail",
+            modelBuilder::onSemtrail,
+            1,
+            true,
+            semtrailLookup
+        )
+    )
+    semtrailLookup.addFunction(
+        FunctionDefinition(
+            "log",
+            modelBuilder::log,
+            1
+        )
+    )
+    semtrailLookup.addFunction(
+        FunctionDefinition(
+            "config",
+            modelBuilder::onConfig,
+            1
+        )
+    )
+    semtrailLookup.addFunction(
+        FunctionDefinition(
+            "node",
+            modelBuilder::onNode,
+            2
+        )
+    )
+    semtrailLookup.addFunction(
+        FunctionDefinition(
+            "edge",
+            modelBuilder::onEdge,
+            3
+        )
+    )
+
+    return appLookup
+}
+
 fun main(args : Array<String>) {
     if (args.size !=3) {
         logger.error("SemTrail <description file.semtrail <template directory> <target directory>")
@@ -82,40 +127,8 @@ fun main(args : Array<String>) {
     }
 
     val modelBuilder = ASTModelBuilder(model)
-    val appLookup = LookupContext()
-    val semtrailLookup = LookupContext(appLookup)
 
-    appLookup.addFunction(
-        FunctionDefinition(
-            "semtrail",
-            modelBuilder::onSemtrail,
-            1,
-            true,
-            semtrailLookup
-        )
-    )
-    semtrailLookup.addFunction(
-        FunctionDefinition(
-            "config",
-            modelBuilder::onConfig,
-            1
-        )
-    )
-    semtrailLookup.addFunction(
-        FunctionDefinition(
-            "node",
-            modelBuilder::onNode,
-            2
-        )
-    )
-    semtrailLookup.addFunction(
-        FunctionDefinition(
-            "edge",
-            modelBuilder::onEdge,
-            3
-        )
-    )
-
+    val appLookup = createApplicationContext(modelBuilder)
     val executor = Executor()
 
     executor.evaluate(functionCall, appLookup)

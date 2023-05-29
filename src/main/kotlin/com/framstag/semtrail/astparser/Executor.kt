@@ -39,14 +39,12 @@ class Executor {
     private fun evaluateFunction(call: FunctionCall, lookupContext: LookupContext):Value {
         val parameterIter = call.getParameter().listIterator()
         val functionNameType = parameterIter.next();
-        val functionNameValue = evaluate(functionNameType, lookupContext)
 
-        if (!functionNameValue.isStringValue()) {
-            logger.error("Value of functionName is not a string value")
-            return NilValue.NIL
+        if (!functionNameType.isSymbol()) {
+            logger.error("Function name must be of type 'Symbol'")
         }
 
-        val functionName = functionNameValue.toStringValue().value
+        val functionName = functionNameType.toSymbol().value()
         val function = lookupContext.getFunction(functionName)
 
         if (function == null) {

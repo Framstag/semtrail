@@ -10,13 +10,26 @@ class ASTModelBuilder(private val model: Model) {
 
     fun onSemtrail(values: Vector<Value>): Value {
         if (!values[0].isStringValue()) {
-            logger.error("Expected String for 1. parameter 'name' of 'semtrail' function")
+            logger.error("Expected 'String' for 1. parameter 'name' of 'semtrail' function")
             return NilValue.NIL
         }
 
         val nameValue = values[0].toStringValue().value
 
         model.name=nameValue
+
+        return NilValue.NIL
+    }
+
+    fun log(values: Vector<Value>):Value {
+        if (!values[0].isStringValue()) {
+            logger.error("Expected String for 1. parameter 'value' of 'log' function")
+            return NilValue.NIL
+        }
+
+        val value = values[0].toStringValue().value
+
+        logger.info("log: $value")
 
         return NilValue.NIL
     }

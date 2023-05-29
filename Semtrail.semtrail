@@ -1,5 +1,7 @@
 (semtrail "Semtrail"
 
+  (log "An example of the Semtrail syntax describing a semtrail for the application itself")
+
   (config {
     :nodeTypes '(
       :general-condition
