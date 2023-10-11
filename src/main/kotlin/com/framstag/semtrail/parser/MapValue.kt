@@ -1,4 +1,4 @@
-package com.framstag.semtrail.astparser
+package com.framstag.semtrail.parser
 
 class MapValue(val value: kotlin.collections.Map<StringValue,Value>):Value {
 

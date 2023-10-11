@@ -1,8 +1,8 @@
 package com.framstag.semtrail
 
-import com.framstag.semtrail.astparser.*
+import com.framstag.semtrail.parser.*
 import com.framstag.semtrail.generator.*
-import com.framstag.semtrail.model.ASTModelBuilder
+import com.framstag.semtrail.model.ModelBuilder
 import com.framstag.semtrail.model.Model
 import mu.KotlinLogging
 import org.thymeleaf.TemplateEngine
@@ -14,7 +14,7 @@ import java.nio.file.Paths
 
 val logger = KotlinLogging.logger("main")
 
-fun createApplicationContext(modelBuilder: ASTModelBuilder):LookupContext {
+fun createApplicationContext(modelBuilder: ModelBuilder):LookupContext {
     val appLookup = LookupContext()
     val semtrailLookup = LookupContext(appLookup)
 
@@ -126,7 +126,7 @@ fun main(args : Array<String>) {
         return
     }
 
-    val modelBuilder = ASTModelBuilder(model)
+    val modelBuilder = ModelBuilder(model)
 
     val appLookup = createApplicationContext(modelBuilder)
     val executor = Executor()

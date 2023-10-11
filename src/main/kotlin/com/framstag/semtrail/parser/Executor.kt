@@ -1,4 +1,4 @@
-package com.framstag.semtrail.astparser
+package com.framstag.semtrail.parser
 
 import mu.KLogging
 import java.util.Vector
@@ -6,10 +6,17 @@ import java.util.Vector
 class Executor {
     companion object : KLogging()
 
-    fun evaluate(code: Type, lookupContext: LookupContext): Value {
+
+    fun evaluate(code: Type, lookupContext: LookupContext):Value {
+        val context = ExecutionContext()
+
+        return evaluate(context, code, lookupContext)
+    }
+
+    private fun evaluate(context: ExecutionContext, code: Type, lookupContext: LookupContext): Value {
         return when {
             code.isFunctionCall() -> {
-                evaluateFunction(code.toFunctionCall(), lookupContext)
+                evaluateFunction(context, code.toFunctionCall(), lookupContext)
             }
 
             code.isAtom() -> {
@@ -36,9 +43,9 @@ class Executor {
         }
     }
 
-    private fun evaluateFunction(call: FunctionCall, lookupContext: LookupContext):Value {
+    private fun evaluateFunction(context: ExecutionContext, call: FunctionCall, lookupContext: LookupContext):Value {
         val parameterIter = call.getParameter().listIterator()
-        val functionNameType = parameterIter.next();
+        val functionNameType = parameterIter.next()
 
         if (!functionNameType.isSymbol()) {
             logger.error("Function name must be of type 'Symbol'")
@@ -72,7 +79,7 @@ class Executor {
             parameterArray.add(evaluate(parameter,functionContext))
         }
 
-        return function.callback(parameterArray)
+        return function.callback(context, parameterArray)
     }
 
     private fun evaluateList(list : List, lookupContext: LookupContext):Value {

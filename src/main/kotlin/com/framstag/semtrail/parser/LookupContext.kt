@@ -1,4 +1,4 @@
-package com.framstag.semtrail.astparser
+package com.framstag.semtrail.parser
 
 class LookupContext(val parent: LookupContext? = null) {
     private val map = mutableMapOf<String,FunctionDefinition>()

@@ -1,22 +1,22 @@
-package com.framstag.semtrail.astparser
+package com.framstag.semtrail.parser
 
 import com.framstag.semtrail.Token
 import mu.KLogging
 
-class Text(token: Token) : Type {
+class Atom(token: Token) : Type {
     companion object : KLogging()
 
-    private val value : String
+    private val value: String
 
     init {
         value = token.value
     }
 
-    override fun isText(): Boolean {
+    override fun isAtom(): Boolean {
         return true
     }
 
-    override fun toText(): Text {
+    override fun toAtom(): Atom {
         return this
     }
 

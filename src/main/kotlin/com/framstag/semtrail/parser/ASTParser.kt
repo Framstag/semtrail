@@ -1,4 +1,4 @@
-package com.framstag.semtrail.astparser
+package com.framstag.semtrail.parser
 
 import com.framstag.semtrail.Scanner
 import com.framstag.semtrail.Token

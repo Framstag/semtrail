@@ -1,14 +1,15 @@
 package com.framstag.semtrail.model
 
-import com.framstag.semtrail.astparser.NilValue
-import com.framstag.semtrail.astparser.Value
+import com.framstag.semtrail.parser.ExecutionContext
+import com.framstag.semtrail.parser.NilValue
+import com.framstag.semtrail.parser.Value
 import mu.KLogging
 import java.util.*
 
-class ASTModelBuilder(private val model: Model) {
+class ModelBuilder(private val model: Model) {
     companion object : KLogging()
 
-    fun onSemtrail(values: Vector<Value>): Value {
+    fun onSemtrail(context: ExecutionContext, values: Vector<Value>): Value {
         if (!values[0].isStringValue()) {
             logger.error("Expected 'String' for 1. parameter 'name' of 'semtrail' function")
             return NilValue.NIL
@@ -21,7 +22,8 @@ class ASTModelBuilder(private val model: Model) {
         return NilValue.NIL
     }
 
-    fun log(values: Vector<Value>):Value {
+    fun log(context: ExecutionContext, values: Vector<Value>):Value {
+        val value = context.assertStringParameter(values,0,"log","value"))
         if (!values[0].isStringValue()) {
             logger.error("Expected String for 1. parameter 'value' of 'log' function")
             return NilValue.NIL
@@ -142,7 +144,7 @@ class ASTModelBuilder(private val model: Model) {
         }
     }
 
-    fun onConfig(values: Vector<Value>): Value {
+    fun onConfig(context: ExecutionContext, values: Vector<Value>): Value {
         if (!values[0].isMapValue()) {
             logger.error("Expected Map for 1. parameter 'propertyMap' of 'config' function")
             return NilValue.NIL
@@ -177,7 +179,7 @@ class ASTModelBuilder(private val model: Model) {
         return NilValue.NIL
     }
 
-    fun onNode(values: Vector<Value>): Value {
+    fun onNode(context: ExecutionContext, values: Vector<Value>): Value {
         if (!values[0].isStringValue()) {
             logger.error("Expected String for 1. parameter 'nodeName' of 'node' function")
             return NilValue.NIL
@@ -223,7 +225,7 @@ class ASTModelBuilder(private val model: Model) {
         return NilValue.NIL
     }
 
-    fun onEdge(values: Vector<Value>): Value {
+    fun onEdge(context: ExecutionContext, values: Vector<Value>): Value {
         if (!values[0].isStringValue()) {
             logger.error("Expected String for 1. parameter 'fromNodeName' of 'edge' function")
             return NilValue.NIL
