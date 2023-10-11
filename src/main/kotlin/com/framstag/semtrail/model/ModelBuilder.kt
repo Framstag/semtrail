@@ -10,28 +10,21 @@ class ModelBuilder(private val model: Model) {
     companion object : KLogging()
 
     fun onSemtrail(context: ExecutionContext, values: Vector<Value>): Value {
-        if (!values[0].isStringValue()) {
-            logger.error("Expected 'String' for 1. parameter 'name' of 'semtrail' function")
-            return NilValue.NIL
+        val potentialName = context.assertStringParameter(values,0,"semtrail","name")
+
+        potentialName?.let {
+            model.name=potentialName
         }
-
-        val nameValue = values[0].toStringValue().value
-
-        model.name=nameValue
 
         return NilValue.NIL
     }
 
     fun log(context: ExecutionContext, values: Vector<Value>):Value {
-        val value = context.assertStringParameter(values,0,"log","value"))
-        if (!values[0].isStringValue()) {
-            logger.error("Expected String for 1. parameter 'value' of 'log' function")
-            return NilValue.NIL
+        val potentialValue = context.assertStringParameter(values,0,"log","value")
+
+        potentialValue?.let {
+            logger.info("log: $it")
         }
-
-        val value = values[0].toStringValue().value
-
-        logger.info("log: $value")
 
         return NilValue.NIL
     }
