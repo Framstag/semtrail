@@ -3,15 +3,17 @@ package com.framstag.semtrail.model
 class Model {
     var name : String = ""
 
-    var nodeTypeSet: MutableSet<String> = mutableSetOf()
-    var nodeTypeNames: MutableMap<String,String> = mutableMapOf()
-    var nodeTypeColors: MutableMap<String,String> = mutableMapOf()
-
-    var edgeTypeSet: MutableSet<String> = mutableSetOf()
-    var edgeTypeNames: MutableMap<String,String> = mutableMapOf()
-    var edgeTypeColors: MutableMap<String,String> = mutableMapOf()
-
+    val nodeTypes : MutableMap<String, NodeType> = mutableMapOf()
+    val edgeTypes : MutableMap<String, EdgeType> = mutableMapOf()
     val nodeMap : MutableMap<String, Node> = mutableMapOf()
+
+    fun sortedNodeTypes (): MutableList<NodeType>? {
+        return nodeTypes.values.stream().sorted().toList()
+    }
+
+    fun sortedEdgeTypes (): MutableList<EdgeType>? {
+        return edgeTypes.values.stream().sorted().toList()
+    }
 
     fun hasNode(name: String):Boolean {
         return nodeMap.contains(name)

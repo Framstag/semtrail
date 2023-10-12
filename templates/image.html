@@ -37,8 +37,8 @@
                 {
                     id: [[${node.hashCode()}]],
                     label: [[${node.name}]],
-                    title:  [[${model.nodeTypeNames[node.type]}]],
-                    color: [[${model.nodeTypeColors[node.type]}]]
+                    title: [[${model.nodeTypes[node.type].name}]]+": "+[[${node.doc}]],
+                    color: [[${model.nodeTypes[node.type].color}]]
                 },
                 /*[/]*/
             ]);
@@ -48,12 +48,12 @@
                 /*[# th:each="node : ${nodes}"]*/
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
                 {
-                    from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
-                    to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
+                    from:   [[${edge.from.hashCode()}]],
+                    to:     [[${edge.to.hashCode()}]],
                     arrows: 'to',
-                    title:  [[${model.edgeTypeNames[edge.type]}]],
+                    title:  [[${model.edgeTypes[edge.type].name}]],
                     color:  {
-                        color: [[${model.edgeTypeColors[edge.type]}]]  // [[${edge.type}]]
+                        color: [[${model.edgeTypes[edge.type].color}]]
                     }
                 },
                 /*[/]*/

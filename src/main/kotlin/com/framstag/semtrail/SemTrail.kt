@@ -1,10 +1,17 @@
 package com.framstag.semtrail
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.ConsoleAppender
+import ch.qos.logback.core.encoder.Encoder
 import com.framstag.semtrail.parser.*
 import com.framstag.semtrail.generator.*
 import com.framstag.semtrail.model.ModelBuilder
 import com.framstag.semtrail.model.Model
 import mu.KotlinLogging
+import org.slf4j.LoggerFactory
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.FileTemplateResolver
@@ -14,9 +21,10 @@ import java.nio.file.Paths
 
 val logger = KotlinLogging.logger("main")
 
-fun createApplicationContext(modelBuilder: ModelBuilder):LookupContext {
+fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     val appLookup = LookupContext()
     val semtrailLookup = LookupContext(appLookup)
+    val configLookup = LookupContext(semtrailLookup)
 
     appLookup.addFunction(
         FunctionDefinition(
@@ -38,14 +46,16 @@ fun createApplicationContext(modelBuilder: ModelBuilder):LookupContext {
         FunctionDefinition(
             "config",
             modelBuilder::onConfig,
-            1
+            0,
+            true,
+            configLookup
         )
     )
     semtrailLookup.addFunction(
         FunctionDefinition(
             "node",
             modelBuilder::onNode,
-            2
+            3,
         )
     )
     semtrailLookup.addFunction(
@@ -56,12 +66,51 @@ fun createApplicationContext(modelBuilder: ModelBuilder):LookupContext {
         )
     )
 
+    configLookup.addFunction(
+        FunctionDefinition(
+            "nodeType",
+            modelBuilder::onNodeType,
+            3
+        )
+    )
+
+    configLookup.addFunction(
+        FunctionDefinition(
+            "edgeType",
+            modelBuilder::onEdgeType,
+            3
+        )
+    )
+
     return appLookup
 }
 
-fun main(args : Array<String>) {
-    if (args.size !=3) {
-        logger.error("SemTrail <description file.semtrail <template directory> <target directory>")
+fun initializeLogging() {
+    val logCtx : LoggerContext=LoggerFactory.getILoggerFactory() as LoggerContext
+
+    logCtx.reset()
+
+    val logEncoder: PatternLayoutEncoder = PatternLayoutEncoder()
+    logEncoder.context = logCtx
+    logEncoder.pattern = "%d{HH:mm:ss.SSS} %-5level %msg%n"
+    logEncoder.start()
+
+    val logConsoleAppender = ConsoleAppender<ILoggingEvent>()
+    logConsoleAppender.context = logCtx
+    logConsoleAppender.name = "console"
+    logConsoleAppender.encoder = logEncoder
+    logConsoleAppender.start()
+
+    val log = logCtx.getLogger("ROOT")
+    log.level = Level.INFO
+    log.addAppender(logConsoleAppender)
+}
+
+fun main(args: Array<String>) {
+    initializeLogging()
+
+    if (args.size != 3) {
+        logger.error("SemTrail <description file> <template directory> <target directory>")
         return
     }
 
@@ -118,10 +167,9 @@ fun main(args : Array<String>) {
     val functionCall = parser.parse()
     logger.info("Parsing to AST done.")
 
-    if (functionCall != null) {
+    if (!parser.hasErrors() && functionCall != null) {
         logger.info("OK")
-    }
-    else {
+    } else {
         logger.info("ERROR")
         return
     }
@@ -155,53 +203,53 @@ fun main(args : Array<String>) {
     val cssTemplateEngine = TemplateEngine()
     cssTemplateEngine.addTemplateResolver(cssTemplateResolver)
 
-    val cssGenerator = CSSGenerator(targetDirectory,model)
+    val cssGenerator = CSSGenerator(targetDirectory, model)
 
     cssGenerator.generate(cssTemplateEngine)
 
-    val indexGenerator = IndexPageGenerator(targetDirectory,model)
+    val indexGenerator = IndexPageGenerator(targetDirectory, model)
 
     indexGenerator.generate(httpTemplateEngine)
 
-    val indexImageGenerator = IndexImagePageGenerator(targetDirectory,model)
+    val indexImageGenerator = IndexImagePageGenerator(targetDirectory, model)
 
     indexImageGenerator.generate(httpTemplateEngine)
 
-    val nodeTypeIndexPageGenerator = NodeTypeIndexPageGenerator(targetDirectory,model)
+    val nodeTypeIndexPageGenerator = NodeTypeIndexPageGenerator(targetDirectory, model)
 
-    for (type in model.nodeTypeSet) {
-        nodeTypeIndexPageGenerator.generate(httpTemplateEngine, type)
+    for (type in model.nodeTypes.values.stream().sorted().toList()) {
+        nodeTypeIndexPageGenerator.generate(httpTemplateEngine, type.type)
     }
 
-    val nodePagesGenerator = NodePagesGenerator(targetDirectory,model)
+    val nodePagesGenerator = NodePagesGenerator(targetDirectory, model)
 
     nodePagesGenerator.generate(httpTemplateEngine)
 
-    val starterGenerator = StarterIndexPageGenerator(targetDirectory,model)
+    val starterGenerator = StarterIndexPageGenerator(targetDirectory, model)
 
     starterGenerator.generate(httpTemplateEngine)
 
-    val leaveGenerator = LeaveIndexPageGenerator(targetDirectory,model)
+    val leaveGenerator = LeaveIndexPageGenerator(targetDirectory, model)
 
     leaveGenerator.generate(httpTemplateEngine)
 
-    val mostCausesGenerator = MostCausesIndexPageGenerator(targetDirectory,model)
+    val mostCausesGenerator = MostCausesIndexPageGenerator(targetDirectory, model)
 
     mostCausesGenerator.generate(httpTemplateEngine)
 
-    val mostConsequencesGenerator = MostConsequencesIndexPageGenerator(targetDirectory,model)
+    val mostConsequencesGenerator = MostConsequencesIndexPageGenerator(targetDirectory, model)
 
     mostConsequencesGenerator.generate(httpTemplateEngine)
 
-    val mostConnnectedGenerator = MostConnectedIndexPageGenerator(targetDirectory,model)
+    val mostConnnectedGenerator = MostConnectedIndexPageGenerator(targetDirectory, model)
 
     mostConnnectedGenerator.generate(httpTemplateEngine)
 
-    val orphanGenerator = OrphanIndexPageGenerator(targetDirectory,model)
+    val orphanGenerator = OrphanIndexPageGenerator(targetDirectory, model)
 
     orphanGenerator.generate(httpTemplateEngine)
 
-    val noDocGenerator = NoDocIndexPageGenerator(targetDirectory,model)
+    val noDocGenerator = NoDocIndexPageGenerator(targetDirectory, model)
 
     noDocGenerator.generate(httpTemplateEngine)
 

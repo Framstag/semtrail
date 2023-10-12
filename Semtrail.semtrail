@@ -2,142 +2,90 @@
 
   (log "An example of the Semtrail syntax describing a semtrail for the application itself")
 
-  (config {
-    :nodeTypes '(
-      :general-condition
-      :functional-requirement
-      :quality-attribute
-      :assumption
-      :fact
-      :concept
-      :technology
-    )
-
-    :edgeTypes '(
-      :consequence
-      :decision
-      :derivation
-      :option
-    )
-
-    :nodeTypeNames {
-      :general-condition      "General condition"
-      :functional-requirement "Functional requirement"
-      :quality-attribute      "Quality attribute"
-      :assumption             "Asumption"
-      :fact                   "Fact"
-      :concept                "Concept"
-      :technology             "Technology"
-    }
-
+  (config
     ;; See https://html-color.codes/
 
-    :nodeTypeColors {
-      :general-condition      "#cccccc" ;; grey
-      :functional-requirement "#cccc00" ;; yellow
-      :quality-attribute      "#ee82ee" ;; violett
-      :assumption             "#ff5349" ;; red
-      :fact                   "#32cd32" ;; green
-      :concept                "#f4a460" ;; brown
-      :technology             "#00bfff" ;; blue
-    }
+    (nodeType :general-condition "General condition" "#cccccc")           ;; grey
+    (nodeType :functional-requirement "Functional requirement" "#cccc00") ;; yellow
+    (nodeType :quality-attribute "Quality attribute" "#ee82ee")           ;; violet
+    (nodeType :assumption "Assumption attribute" "#ff5349")               ;; red
+    (nodeType :fact "Fact" "#32cd32")                                     ;; green
+    (nodeType :concept "Concept" "#f4a460")                               ;; brown
+    (nodeType :technology "Technology" "#00bfff")                         ;; blue
 
-    :edgeTypeNames {
-      :consequence "Consequence"
-      :decision    "Decision"
-      :derivation  "Derivation"
-      :option      "Option"
-    }
-
-    :edgeTypeColors {
-      :consequence "#adff2f" ;; light green
-      :decision    "#32cd32" ;; dark green
-      :derivation  "#ffa500" ;; orange
-      :option      "#cccccc" ;; grey
-    }
-  })
+    (edgeType :consequence "Consequence" "#adff2f")                       ;; light green
+    (edgeType :decision "Decision" "#32cd32")                             ;; dark green
+    (edgeType :derivation "Derivation" "#ffa500")                         ;; orange
+    (edgeType :option "Option" "#cccccc")                                 ;; grey
+  )
 
   ;; General condition
 
-  (node "Known programming languages" {
-    :type :general-condition
+  (node "Known programming languages" :general-condition {
     :doc "We have focus on DSLs and semantic tree and do not want to learn a new language"
   })
 
-  (node "Learn something" {
-    :type :general-condition
+  (node "Learn something" :general-condition {
     :doc "We want to do something we did not do before and learn from it"
   })
 
   ;; Functional requirements
 
-  (node "Runs everywhere" {
-    :type :functional-requirement
+  (node "Runs everywhere" :functional-requirement {
     :doc "Should work on any developer computer"
   })
 
-  (node "Clojure syntax" {
-    :type :functional-requirement
+  (node "Clojure syntax" :functional-requirement {
     :doc "We want a Clojure-like syntax for the DSL"
   })
 
   (edge "Learn something" :decision "Clojure syntax")
 
-  (node "Software must be build" {
-    :type :functional-requirement
-    :doc "The somftware must be build"
+  (node "Software must be build" :functional-requirement {
+    :doc "The software must be build"
   })
 
   ;; Quality requirements
 
-  (node "Simple" {
-    :type :quality-attribute
+  (node "Simple" :quality-attribute {
     :doc "The solution must be simple"
   })
 
-  (node "High reuse" {
-    :type :quality-attribute
+  (node "High reuse" :quality-attribute {
     :doc "The solution must maximise reuse"
   })
 
-  (node "Maintainability" {
-    :type :quality-attribute
+  (node "Maintainability" :quality-attribute {
     :doc "We want to be able to reproduce and debug problems of users"
   })
 
-  (node "Simple hosting" {
-    :type :quality-attribute
+  (node "Simple hosting" :quality-attribute {
     :doc "It should be simple for the users to show the resulting web pages"
   })
 
-  (node "Easy to build" {
-    :type :quality-attribute
+  (node "Easy to build" :quality-attribute {
     :doc "Should be easy to build"
   })
 
-  (node "Use automation" {
-    :type :quality-attribute
+  (node "Use automation" :quality-attribute {
     :doc "We should use automation as much as possible"
   })
 
   ;; Facts
 
-  (node "Java Knowledge" {
-    :type :fact
+  (node "Java Knowledge" :fact {
     :doc "We know Java"
   })
 
   (edge "Known programming languages" :option "Java Knowledge")
 
-  (node "Kotlin Knowledge" {
-    :type :fact
+  (node "Kotlin Knowledge" :fact {
     :doc "We know Kotlin"
   })
 
   (edge "Known programming languages" :option "Kotlin Knowledge")
 
-  (node "C++ Knowledge" {
-    :type :fact
+  (node "C++ Knowledge" :fact {
     :doc "We know C++"
   })
 
@@ -145,65 +93,55 @@
 
   ;; Concepts
 
-  (node "Command line application" {
-    :type :concept
+  (node "Command line application" :concept {
     :doc "Use of a simple ext-based command line application"
   })
 
   (edge "Simple" :derivation "Command line application")
 
-  (node "Logging" {
-    :type :concept
+  (node "Logging" :concept {
     :doc "Use logging to inform user of application process and errors"
   })
 
-  (node "Configurable" {
-    :type :concept
+  (node "Configurable" :concept {
     :doc "Realzing configurable software"
   })
 
   (edge "High reuse" :derivation "Configurable")
 
-  (node "DSL" {
-    :type :concept
+  (node "DSL" :concept {
     :doc "Use of a DSL"
   })
 
   (edge "Configurable" :derivation "DSL")
-  (edge "Configurable" :derivation "DSL")
   (edge "Simple" :derivation "DSL")
   (edge "Clojure syntax" :derivation "DSL")
 
-  (node "Logging-Framework" {
-    :type :concept
+  (node "Logging-Framework" :concept {
     :doc "Concrete framework to implement logging"
   })
 
   (edge "Maintainability" :derivation "Logging")
 
-  (node "JVM language" {
-    :type :concept
+  (node "JVM language" :concept {
     :doc "Use of the JVM execution environment"
   })
 
   (edge "Runs everywhere" :derivation "JVM language")
 
-  (node "Container" {
-    :type :concept
+  (node "Container" :concept {
     :doc "Use of modern Linux container technology"
   })
 
   (edge "Simple hosting" :derivation "Container")
 
-  (node "Use CI CD" {
-    :type :concept
+  (node "Use CI CD" :concept {
     :doc "We want to make use of a CI/CD process"
   })
 
   (edge "Use automation" :derivation "Use CI CD")
 
-  (node "Build system" {
-    :type :concept
+  (node "Build system" :concept {
     :doc "Simplifies building software"
   })
 
@@ -213,20 +151,17 @@
 
   ;; Technology
 
-  (node "GitHub Actions" {
-    :type :technology
+  (node "GitHub Actions" :technology {
     :doc "CI/CD integration of GitHub"
   })
 
   (edge "Use CI CD" :decision "GitHub Actions")
 
-  (node "Docker" {
-    :type :technology
+  (node "Docker" :technology {
     :doc "Use Docker with NGINX to host the resulting web pages"
   })
 
-  (node "NGINX" {
-    :type :technology
+  (node "NGINX" :technology {
     :doc "Use Docker with NGINX to host the resulting web pages"
   })
 
@@ -237,30 +172,26 @@
 
   (edge "Logging" :derivation "Logging-Framework")
 
-  ;; Technologie
+  ;; Technology
 
-  (node "Maven" {
-    :type :technology
+  (node "Maven" :technology {
     :doc "Common build system"
   })
 
-  (node "Gradle" {
-    :type :technology
+  (node "Gradle" :technology {
     :doc "Common build system"
   })
 
   (edge "Build system" :decision "Maven")
   (edge "Build system" :option "Gradle")
 
-  (node "Kotlin-Logging" {
-    :type :technology
+  (node "Kotlin-Logging" :technology {
     :doc "Kotlin-specific loging framework based on slf4j"
   })
 
   (edge "Logging-Framework" :decision "Kotlin-Logging")
 
-  (node "Kotlin" {
-    :type :technology
+  (node "Kotlin" :technology {
     :doc "New programming language on top of JVM"
   })
 

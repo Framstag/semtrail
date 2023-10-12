@@ -8,26 +8,36 @@ import mu.KLogging
 class ASTParser(private val scanner: Scanner) {
     companion object : KLogging()
 
+    private var errorCount = 0;
+
     fun parse():FunctionCall? {
         scanner.nextToken()
 
         return parseFunctionCall()
     }
 
+    fun hasErrors():Boolean {
+        return errorCount >0
+    }
+
     private fun expectedTokenType(token : Token, expectedType : TokenType) {
         logger.error("${token.row}, ${token.column}: Expected $expectedType, but got ${token.getRef()}")
+        errorCount++
     }
 
     private fun expectedTokenType(token : Token, description: String, expectedType : TokenType) {
         logger.error("${token.row}, ${token.column}: Expected '$description' ($expectedType), but got ${token.getRef()}")
+        errorCount++
     }
 
     private fun syntacticError(token: Token, description: String) {
         logger.error("${token.row}, ${token.column}: '$description")
+        errorCount++
     }
 
     private fun unexpectedEOL(token : Token) {
         logger.error("${token.row}, ${token.column}: Unexpected EOL")
+        errorCount
     }
 
     private fun parseFunctionCall():FunctionCall? {

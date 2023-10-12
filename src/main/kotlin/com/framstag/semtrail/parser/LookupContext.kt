@@ -1,6 +1,6 @@
 package com.framstag.semtrail.parser
 
-class LookupContext(val parent: LookupContext? = null) {
+class LookupContext(private val parent: LookupContext? = null) {
     private val map = mutableMapOf<String,FunctionDefinition>()
 
     fun addFunction(definition: FunctionDefinition) {
@@ -14,11 +14,6 @@ class LookupContext(val parent: LookupContext? = null) {
             return functionDefinition
         }
 
-        if (parent != null) {
-            return parent.getFunction(name)
-        }
-        else {
-            return null
-        }
+        return parent?.getFunction(name)
     }
 }

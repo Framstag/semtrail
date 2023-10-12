@@ -36,7 +36,7 @@
                      th:href="@{nodes/{name}.html(name=${node.hashCode})}"
                      th:text="${node.name}">Name</a>
                 </td>
-                <td th:text="${model.nodeTypeNames[node.type]}">Type</td>
+                <td th:text="${model.nodeTypes[node.type].name}">Type</td>
                 <td th:text="${node.doc}">Doc</td>
             </tr>
             </tbody>

@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" th:content="|${model.nodeTypeNames[node.type]} ${node.name}|"/>
+    <meta name="description" th:content="|${model.nodeTypes[node.type].name} ${node.name}|"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <link rel="stylesheet" type="text/css" href="../standard.css">
-    <title th:text="|${model.nodeTypeNames[node.type]} '${node.name}'|"></title>
+    <title th:text="|${model.nodeTypes[node.type].name} '${node.name}'|"></title>
 
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
@@ -19,7 +19,7 @@
 </head>
 
 <body>
-<div th:replace="~{header (title=|${model.nodeTypeNames[node.type]} '${node.name}'|,modelName=${model.name})}"></div>
+<div th:replace="~{header (title=|${model.nodeTypes[node.type].name} '${node.name}'|,modelName=${model.name})}"></div>
 
 <div id="content">
     <div th:replace="~{navigation (rel='..')}"></div>
@@ -35,7 +35,7 @@
                 <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.from.hashCode})}"
                    th:text="${edge.from.name}">Name</a>
                 --
-                [[${model.edgeTypeNames[edge.type]}]]
+                [[${model.edgeTypes[edge.type].name}]]
                 &#x2192;
                 [[${node.name}]]
 
@@ -49,7 +49,7 @@
             <li th:each="edge : ${node.toNodes.values}">
                 [[${node.name}]]
                 --
-                [[${model.edgeTypeNames[edge.type]}]]
+                [[${model.edgeTypes[edge.type].name}]]
                 &#x2192;
                 <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.to.hashCode})}"
                    th:text="${edge.to.name}">Name</a>
@@ -69,15 +69,15 @@
                 {
                     id: [[${edge.from.hashCode()}]],
                     label: [[${edge.from.name}]],
-                    title:  [[${model.nodeTypeNames[edge.from.type]}]],
-                    color: [[${model.nodeTypeColors[edge.from.type]}]]
+                    title:  [[${model.nodeTypes[edge.from.type].name}]]+": "+[[${edge.from.doc}]],
+                    color: [[${model.nodeTypes[edge.from.type].color}]]
                 },
                 /*[/]*/
                 {
                     id: [[${node.hashCode()}]],
                      label: [[${node.name}]],
-                     title:  [[${model.nodeTypeNames[node.type]}]],
-                     color: [[${model.nodeTypeColors[node.type]}]],
+                     title:  [[${model.nodeTypes[node.type].name}]]+": "+[[${node.doc}]],
+                     color: [[${model.nodeTypes[node.type].color}]],
                      borderWidth: 4,
                      fixed: {
                         x: true,
@@ -88,8 +88,8 @@
                 {
                     id: [[${edge.to.hashCode()}]],
                     label: [[${edge.to.name}]],
-                    title:  [[${model.nodeTypeNames[edge.to.type]}]],
-                    color: [[${model.nodeTypeColors[edge.to.type]}]]
+                    title:  [[${model.nodeTypes[edge.to.type].name}]]+": "+[[${edge.to.doc}]],
+                    color: [[${model.nodeTypes[edge.to.type].color}]]
                 },
                 /*[/]*/
             ]);
@@ -98,23 +98,23 @@
             var edges = new vis.DataSet([
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
                 {
-                    from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
-                    to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
+                    from:   [[${edge.from.hashCode()}]],
+                    to:     [[${edge.to.hashCode()}]],
                     arrows: 'to',
-                    title:  [[${model.edgeTypeNames[edge.type]}]], // [[${edge.type}]]
+                    title:  [[${model.edgeTypes[edge.type].name}]],
                     color: {
-                        color: [[${model.edgeTypeColors[edge.type]}]]
+                        color: [[${model.edgeTypes[edge.type].color}]]
                     }
                 },
                 /*[/]*/
                 /*[# th:each="edge : ${node.toNodes.values}"]*/
                 {
-                    from:   [[${edge.from.hashCode()}]], // [[${edge.from.name}]]
-                    to:     [[${edge.to.hashCode()}]],   // [[${edge.to.name}]]
+                    from:   [[${edge.from.hashCode()}]],
+                    to:     [[${edge.to.hashCode()}]],
                     arrows: 'to',
-                    title:  [[${model.edgeTypeNames[edge.type]}]], // [[${edge.type}]]
+                    title:  [[${model.edgeTypes[edge.type].name}]],
                     color: {
-                        color: [[${model.edgeTypeColors[edge.type]}]]
+                        color: [[${model.edgeTypes[edge.type].color}]]
                     }
                 },
                 /*[/]*/

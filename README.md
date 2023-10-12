@@ -80,13 +80,26 @@ The Model class has the following attributes:
 
 |Attribute|Type|Description|
 |---------|----|-----------|
-|nodeTypeSet|Set\<String\>|Set of node type names|
-|nodeTypeNames|Map\<String,String\>|Mapping from node type name to label|
-|nodeTypeColors|Map\<String,String\>|Mapping from node type name to color|
-|edgeTypeSet|Set\<String\>|Set of node type names|
-|edgeTypeNames|Map\<String,String\>|Mapping from edge type name to label|
-|edgeTypeColors|Map\<String,String\>|Mapping from edge type name to color|
+|nodeTypes|Map\<String,NodeType\>|map of node type names to node types|
+|edgeTypes|Map\<String,EdgeType\>|map of edge type names to edge types|
 |nodeMap|Map\<String,Node\>|Mapping from node name to `Node` type instance|
+
+### The NodeType type
+
+|Attribute|Type  |Description|
+|---------|------|-----------|
+|type     |String|The type name of the node type|
+|name     |String|The descriptive name of the node type|
+|color    |String|The color for the node|
+
+### The EdgeType type
+
+|Attribute|Type  |Description|
+|---------|------|-----------|
+|type     |String|The type name of the edge type|
+|name     |String|The descriptive name of the edge type|
+|color    |String|The color for the edge|
+
 
 ### The Node type
 

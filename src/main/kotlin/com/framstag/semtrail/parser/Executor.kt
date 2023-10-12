@@ -66,7 +66,7 @@ class Executor {
         if ((!functionIsVariadic && !functionParameterSizeMatches) ||
             (functionIsVariadic && !functionMinimumParameterAsDefined)
         ) {
-            logger.error("Function $functionName has arity ${function.parameterCount} and variadic $functionIsVariadic, but parameter count is ${call.getParameter().size - 1}")
+            logger.error("Function '$functionName' has arity ${function.parameterCount} and variadic $functionIsVariadic, but parameter count is ${call.getParameter().size - 1}")
             return NilValue.NIL
         }
 

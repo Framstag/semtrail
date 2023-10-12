@@ -3,10 +3,10 @@
         <li><a href="/index.html" th:href="@{{path}/index.html(path=${rel})}">All</a></li>
         <li><a href="/index_image.html" th:href="@{{path}/index_image.html(path=${rel})}">All (Map)</a></li>
 
-        <li th:each="nodeType : ${model.nodeTypeSet}">
+        <li th:each="nodeType : ${model.sortedNodeTypes}">
             <a href="/index.html"
-               th:href="@{{path}/{type}_index.html(path=${rel},type=${#strings.replace(nodeType,':','')})}"
-               th:text="${model.nodeTypeNames[nodeType]}">Type</a>
+               th:href="@{{path}/{type}_index.html(path=${rel},type=${#strings.replace(nodeType.type,':','')})}"
+               th:text="${nodeType.name}">Type</a>
         </li>
 
         <li>

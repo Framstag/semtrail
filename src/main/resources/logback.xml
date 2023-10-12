@@ -9,6 +9,7 @@
     </appender>
 
     <logger name="org.thymeleaf" level="INFO"/>"
+    <logger name="org.thymeleaf.TemplateEngine.CONFIG=TRACE" level="INFO"/>"
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
