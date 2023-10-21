@@ -184,7 +184,7 @@
   (edge "Build system" :option "Gradle")
 
   (node "Kotlin-Logging" :technology {
-    :doc "Kotlin-specific loging framework based on slf4j"
+    :doc "Kotlin-specific logging framework based on slf4j"
   })
 
   (edge "Logging-Framework" :decision "Kotlin-Logging")
@@ -201,8 +201,8 @@
     (allNodesImage)
 
     (nodeTypeTable :constraint)
+    (nodeTypeTable :functional-requirement)
     (nodeTypeTable :quality-attribute)
-    (nodeTypeTable :constraint)
     (nodeTypeTable :assumption)
     (nodeTypeTable :fact)
     (nodeTypeTable :concept)

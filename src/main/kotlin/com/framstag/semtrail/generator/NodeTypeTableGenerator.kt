@@ -7,34 +7,35 @@ import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import java.nio.file.Paths
 
-class NodeTypeTableGenerator(private val targetDirectory: String, private val model: Model, private val nodeType : String):Generator() {
+class NodeTypeTableGenerator(private val nodeType : String):Generator() {
 
     val targetFile="${nodeType.substring(1)}_index.html"
     val templateFile="index"
 
     companion object : KLogging()
 
-    override fun getPages(): List<Page> {
-        return listOf(Page(Paths.get(targetFile), model.nodeTypes[nodeType]!!.name));
+    override fun getPages(data : PagesData): List<Page> {
+        return listOf(Page(Paths.get(targetFile), data.model.nodeTypes[nodeType]!!.name));
     }
 
-    override fun generate(templateEngine: TemplateEngine) {
+    override fun generate(data : GenerateData) {
         logger.info("${this.javaClass.simpleName}: $templateFile -> $targetFile")
 
         val context = Context()
 
-        val nodeList = model.nodeMap.values.toMutableList().filter {
+        val nodeList = data.model.nodeMap.values.toMutableList().filter {
                 node -> node.type == nodeType
         }.sortedBy {
             it.name
         }
 
-        context.setVariable("model",model)
+        bindDataToContext(context,data)
+
         context.setVariable("nodes",nodeList)
 
-        val file = Paths.get(targetDirectory, targetFile).toFile()
+        val file = Paths.get(data.config.targetDirectory, targetFile).toFile()
         val writer = file.printWriter()
-        templateEngine.process(templateFile,context,writer)
+        data.templateEngine.process(templateFile,context,writer)
         writer.close()
     }
 }

@@ -5,13 +5,9 @@ import com.framstag.semtrail.generator.Generator
 class Model {
     var name : String = ""
 
-    var targetDirectory: String = ""
-
     val nodeTypes : MutableMap<String, NodeType> = mutableMapOf()
     val edgeTypes : MutableMap<String, EdgeType> = mutableMapOf()
     val nodeMap : MutableMap<String, Node> = mutableMapOf()
-    val generators : MutableList<Generator> = mutableListOf()
-    val pages :  MutableList<Page> = mutableListOf()
 
     fun sortedNodeTypes (): MutableList<NodeType>? {
         return nodeTypes.values.stream().sorted().toList()

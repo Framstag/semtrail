@@ -1,6 +1,6 @@
 <nav>
     <ul>
-        <li th:each="page : ${model.pages}">
+        <li th:each="page : ${config.pages}">
             <a href="index.html"
                th:href="@{{path}/{url}(path=${rel},url=${page.path})}"
                th:text="${page.label}">Type</a>

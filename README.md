@@ -68,11 +68,12 @@ The following additional template files are used for reusing and sharing content
 
 The template gets passed the following objects, depending on its meaning:
 
-|Object|Type|Passed to|Description|
-|------|----|---------|-----------|
-|model |Model|Always|The data parsed from the semtrail file|
-|node  |Node|Detail page of a node|The current node|
-|nodes|List\<Node\>|List of nodes|The (possibly filtered) list of nodes to display|
+| Object | Type        |Passed to| Description                                      |
+|--------|-------------|---------|--------------------------------------------------|
+| model  | Model       |Always| The data parsed from the semtrail file           |
+| config | Config      |Always| Additional configuration data                    |
+| node   | Node        |Detail page of a node| The current node                                 |
+| nodes  | List\<Node\> |List of nodes| The (possibly filtered) list of nodes to display |
 
 ### The Model type
 
@@ -83,6 +84,23 @@ The Model class has the following attributes:
 |nodeTypes|Map\<String,NodeType\>|map of node type names to node types|
 |edgeTypes|Map\<String,EdgeType\>|map of edge type names to edge types|
 |nodeMap|Map\<String,Node\>|Mapping from node name to `Node` type instance|
+
+### The Config type
+
+The Config class has the following attributes:
+
+| Attribute | Type                   |Description|
+|-----------|------------------------|-----------|
+| pages     | List\<Page\>           |List of pages|
+
+### The Page type
+
+The Page class has the following attributes:
+
+| Attribute | Type   | Description                  |
+|-----------|--------|------------------------------|
+| page      | Path   | path of the generated page   |
+| label     | String | label for the generated page |
 
 ### The NodeType type
 

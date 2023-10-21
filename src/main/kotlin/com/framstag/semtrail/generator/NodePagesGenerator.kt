@@ -7,37 +7,38 @@ import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import java.nio.file.Paths
 
-class NodePagesGenerator(private val targetDirectory: String, private val model: Model):Generator() {
+class NodePagesGenerator():Generator() {
 
     companion object : KLogging()
 
-    override fun getPages(): List<Page> {
+    override fun getPages(data : PagesData): List<Page> {
         val pages = mutableListOf<Page>()
 
-        for (node in model.nodeMap.values) {
+        for (node in data.model.nodeMap.values) {
             pages.add(Page(Paths.get("nodes/${node.hashCode()}.html"),node.name))
         }
 
-        return pages;
+        return pages
     }
 
-    override fun generate(templateEngine: TemplateEngine) {
+    override fun generate(data : GenerateData) {
 
-        for (node in model.nodeMap.values) {
+        for (node in data.model.nodeMap.values) {
             val context = Context()
 
-            context.setVariable("model",model)
+            bindDataToContext(context,data)
+
             context.setVariable("node",node)
 
             val templateFile="node"
             val targetFile="${node.hashCode()}.html"
 
-            val file = Paths.get(targetDirectory, "nodes", targetFile).toFile()
+            val file = Paths.get(data.config.targetDirectory, "nodes", targetFile).toFile()
 
             logger.info("${this.javaClass.simpleName}: $templateFile -> $targetFile")
 
             val writer = file.printWriter()
-            templateEngine.process(templateFile,context,writer)
+            data.templateEngine.process(templateFile,context,writer)
             writer.close()
         }
     }

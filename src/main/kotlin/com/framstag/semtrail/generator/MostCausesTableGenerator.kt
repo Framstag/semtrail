@@ -7,7 +7,7 @@ import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import java.nio.file.Paths
 
-class MostCausesTableGenerator(private val targetDirectory: String, private val model: Model):Generator() {
+class MostCausesTableGenerator():Generator() {
 
     private val templateFile = "index"
     private val targetFile = "most_causes.html"
@@ -15,25 +15,26 @@ class MostCausesTableGenerator(private val targetDirectory: String, private val 
 
     companion object : KLogging()
 
-    override fun getPages(): List<Page> {
+    override fun getPages(data : PagesData): List<Page> {
         return listOf(Page(Paths.get(targetFile),label));
     }
 
-    override fun generate(templateEngine: TemplateEngine) {
+    override fun generate(data : GenerateData) {
         logger.info("${this.javaClass.simpleName}: $templateFile -> $targetFile")
 
         val context = Context()
 
-        val nodeList = model.nodeMap.values.toMutableList().sortedByDescending {
+        val nodeList = data.model.nodeMap.values.toMutableList().sortedByDescending {
             it.fromNodes.size
         }
 
-        context.setVariable("model",model)
+        bindDataToContext(context,data)
+
         context.setVariable("nodes",nodeList)
 
-        val file = Paths.get(targetDirectory,targetFile).toFile()
+        val file = Paths.get(data.config.targetDirectory,targetFile).toFile()
         val writer = file.printWriter()
-        templateEngine.process(templateFile,context,writer)
+        data.templateEngine.process(templateFile,context,writer)
         writer.close()
     }
 }

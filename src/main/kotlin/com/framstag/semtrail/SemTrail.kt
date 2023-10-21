@@ -5,11 +5,11 @@ import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.ConsoleAppender
+import com.framstag.semtrail.configuration.Configuration
 import com.framstag.semtrail.parser.*
 import com.framstag.semtrail.generator.*
-import com.framstag.semtrail.model.ModelBuilder
+import com.framstag.semtrail.dsl.ParserCallback
 import com.framstag.semtrail.model.Model
-import com.framstag.semtrail.model.Page
 import mu.KotlinLogging
 import org.slf4j.LoggerFactory
 import org.thymeleaf.TemplateEngine
@@ -21,7 +21,7 @@ import java.nio.file.Paths
 
 val logger = KotlinLogging.logger("main")
 
-fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
+fun createApplicationContext(callback: ParserCallback): LookupContext {
     val appLookup = LookupContext()
     val semtrailLookup = LookupContext(appLookup)
     val configLookup = LookupContext(semtrailLookup)
@@ -30,7 +30,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     appLookup.addFunction(
         FunctionDefinition(
             "semtrail",
-            modelBuilder::onSemtrail,
+            callback::onSemtrail,
             1,
             true,
             semtrailLookup
@@ -40,14 +40,14 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     semtrailLookup.addFunction(
         FunctionDefinition(
             "log",
-            modelBuilder::log,
+            callback::log,
             1
         )
     )
     semtrailLookup.addFunction(
         FunctionDefinition(
             "config",
-            modelBuilder::onConfig,
+            callback::onConfig,
             0,
             true,
             configLookup
@@ -56,7 +56,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     semtrailLookup.addFunction(
         FunctionDefinition(
             "report",
-            modelBuilder::onReport,
+            callback::onReport,
             0,
             true,
             reportLookup
@@ -65,14 +65,14 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     semtrailLookup.addFunction(
         FunctionDefinition(
             "node",
-            modelBuilder::onNode,
+            callback::onNode,
             3,
         )
     )
     semtrailLookup.addFunction(
         FunctionDefinition(
             "edge",
-            modelBuilder::onEdge,
+            callback::onEdge,
             3
         )
     )
@@ -80,7 +80,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     configLookup.addFunction(
         FunctionDefinition(
             "nodeType",
-            modelBuilder::onNodeType,
+            callback::onNodeType,
             3
         )
     )
@@ -88,7 +88,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     configLookup.addFunction(
         FunctionDefinition(
             "edgeType",
-            modelBuilder::onEdgeType,
+            callback::onEdgeType,
             3
         )
     )
@@ -96,7 +96,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "allNodesTable",
-            modelBuilder::onAllNodesTable,
+            callback::onAllNodesTable,
             0
         )
     )
@@ -104,7 +104,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "allNodesImage",
-            modelBuilder::onAllNodesImage,
+            callback::onAllNodesImage,
             0
         )
     )
@@ -112,7 +112,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "starterTable",
-            modelBuilder::onStarterTable,
+            callback::onStarterTable,
             0
         )
     )
@@ -120,7 +120,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "leavesTable",
-            modelBuilder::onLeavesTable,
+            callback::onLeavesTable,
             0
         )
     )
@@ -128,7 +128,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "mostCausesTable",
-            modelBuilder::onMostCausesTable,
+            callback::onMostCausesTable,
             0
         )
     )
@@ -136,7 +136,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "mostConsequencesTable",
-            modelBuilder::onMostConsequencesTable,
+            callback::onMostConsequencesTable,
             0
         )
     )
@@ -144,7 +144,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "mostConnectedTable",
-            modelBuilder::onMostConnectedTable,
+            callback::onMostConnectedTable,
             0
         )
     )
@@ -152,7 +152,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "orphansTable",
-            modelBuilder::onOrphansTable,
+            callback::onOrphansTable,
             0
         )
     )
@@ -160,7 +160,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "noDocTable",
-            modelBuilder::onNoDocTable,
+            callback::onNoDocTable,
             0
         )
     )
@@ -168,7 +168,7 @@ fun createApplicationContext(modelBuilder: ModelBuilder): LookupContext {
     reportLookup.addFunction(
         FunctionDefinition(
             "nodeTypeTable",
-            modelBuilder::onNodeTypeTable,
+            callback::onNodeTypeTable,
             1
         )
     )
@@ -181,7 +181,7 @@ fun initializeLogging() {
 
     logCtx.reset()
 
-    val logEncoder: PatternLayoutEncoder = PatternLayoutEncoder()
+    val logEncoder = PatternLayoutEncoder()
     logEncoder.context = logCtx
     logEncoder.pattern = "%d{HH:mm:ss.SSS} %-5level %msg%n"
     logEncoder.start()
@@ -251,8 +251,9 @@ fun main(args: Array<String>) {
 
     val scanner = Scanner(args[0])
     val model = Model()
+    val config = Configuration()
 
-    model.targetDirectory = targetDirectory
+    config.targetDirectory = targetDirectory
 
     val parser = ASTParser(scanner)
 
@@ -266,9 +267,9 @@ fun main(args: Array<String>) {
         return
     }
 
-    val modelBuilder = ModelBuilder(model)
+    val parserCallback = ParserCallback(config, model)
 
-    val appLookup = createApplicationContext(modelBuilder)
+    val appLookup = createApplicationContext(parserCallback)
     val executor = Executor()
 
     logger.info("Executing...")
@@ -306,15 +307,17 @@ fun main(args: Array<String>) {
     val cssGenerator = CSSGenerator(targetDirectory, model)
     cssGenerator.generate(cssTemplateEngine)
 
-    model.generators.forEach {
-        model.pages.addAll(it.getPages())
+    val pagesData = PagesData(model)
+    config.generators.forEach {
+        config.pages.addAll(it.getPages(pagesData))
     }
 
-    val nodePagesGenerator = NodePagesGenerator(targetDirectory, model)
-    nodePagesGenerator.generate(httpTemplateEngine)
+    val generateData = GenerateData(httpTemplateEngine, config, model)
+    val nodePagesGenerator = NodePagesGenerator()
+    nodePagesGenerator.generate(generateData)
 
-    model.generators.forEach {
-        it.generate(httpTemplateEngine)
+    config.generators.forEach {
+        it.generate(generateData)
     }
 
     logger.info("Done.")
