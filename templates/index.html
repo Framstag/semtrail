@@ -32,7 +32,7 @@
             <tr th:each="node : ${nodes}">
                 <td>
                     <a
-                     href="nodes/Name.html"
+                     href="node.html"
                      th:href="@{nodes/{name}.html(name=${node.hashCode})}"
                      th:text="${node.name}">Name</a>
                 </td>

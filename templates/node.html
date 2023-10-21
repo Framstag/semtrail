@@ -32,7 +32,7 @@
 
         <ul>
             <li th:each="edge : ${node.fromNodes.values}">
-                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.from.hashCode})}"
+                <a href="node.html" th:href="@{{name}.html(name=${edge.from.hashCode})}"
                    th:text="${edge.from.name}">Name</a>
                 --
                 [[${model.edgeTypes[edge.type].name}]]
@@ -51,7 +51,7 @@
                 --
                 [[${model.edgeTypes[edge.type].name}]]
                 &#x2192;
-                <a href="nodes/Name.html" th:href="@{{name}.html(name=${edge.to.hashCode})}"
+                <a href="node.html" th:href="@{{name}.html(name=${edge.to.hashCode})}"
                    th:text="${edge.to.name}">Name</a>
 
                 <blockquote th:if="${edge.doc != ''}" th:text="${edge.doc}"></blockquote>
@@ -69,14 +69,14 @@
                 {
                     id: [[${edge.from.hashCode()}]],
                     label: [[${edge.from.name}]],
-                    title:  [[${model.nodeTypes[edge.from.type].name}]]+": "+[[${edge.from.doc}]],
+                    title:  [[${model.nodeTypes[edge.from.type].name}+': '+${edge.from.doc}]],
                     color: [[${model.nodeTypes[edge.from.type].color}]]
                 },
                 /*[/]*/
                 {
                     id: [[${node.hashCode()}]],
                      label: [[${node.name}]],
-                     title:  [[${model.nodeTypes[node.type].name}]]+": "+[[${node.doc}]],
+                     title:  [[${model.nodeTypes[node.type].name}+': '+${node.doc}]],
                      color: [[${model.nodeTypes[node.type].color}]],
                      borderWidth: 4,
                      fixed: {
@@ -88,7 +88,7 @@
                 {
                     id: [[${edge.to.hashCode()}]],
                     label: [[${edge.to.name}]],
-                    title:  [[${model.nodeTypes[edge.to.type].name}]]+": "+[[${edge.to.doc}]],
+                    title:  [[${model.nodeTypes[edge.to.type].name}+': '+${edge.to.doc}]],
                     color: [[${model.nodeTypes[edge.to.type].color}]]
                 },
                 /*[/]*/
@@ -129,7 +129,8 @@
             var options = {
                 nodes: {
                     borderWidth: 2,
-                    shadow:true
+                    shadow:true,
+                    shape: "box"
                 },
                 edges: {
                     width: 2,

@@ -1,48 +1,9 @@
 <nav>
     <ul>
-        <li><a href="/index.html" th:href="@{{path}/index.html(path=${rel})}">All</a></li>
-        <li><a href="/index_image.html" th:href="@{{path}/index_image.html(path=${rel})}">All (Map)</a></li>
-
-        <li th:each="nodeType : ${model.sortedNodeTypes}">
-            <a href="/index.html"
-               th:href="@{{path}/{type}_index.html(path=${rel},type=${#strings.replace(nodeType.type,':','')})}"
-               th:text="${nodeType.name}">Type</a>
-        </li>
-
-        <li>
-            <a href="/starter.html" th:href="@{{path}/starter.html(path=${rel})}">
-                Starter
-            </a>
-        </li>
-        <li>
-            <a href="/leave.html" th:href="@{{path}/leave.html(path=${rel})}">
-                Leaves
-            </a>
-        </li>
-        <li>
-            <a href="/most_causes.html" th:href="@{{path}/most_causes.html(path=${rel})}">
-                By #cause
-            </a>
-        </li>
-        <li>
-            <a href="/most_consequences.html" th:href="@{{path}/most_consequences.html(path=${rel})}">
-                By #consequences
-            </a>
-        </li>
-        <li>
-            <a href="/most_connected.html" th:href="@{{path}/most_connected.html(path=${rel})}">
-                By #connections
-            </a>
-        </li>
-        <li>
-            <a href="/orphans.html" th:href="@{{path}/orphans.html(path=${rel})}">
-                Orphans
-            </a>
-        </li>
-        <li>
-            <a href="/no_doc.html" th:href="@{{path}/no_doc.html(path=${rel})}">
-                Missing Documentation
-            </a>
+        <li th:each="page : ${model.pages}">
+            <a href="index.html"
+               th:href="@{{path}/{url}(path=${rel},url=${page.path})}"
+               th:text="${page.label}">Type</a>
         </li>
     </ul>
 </nav>

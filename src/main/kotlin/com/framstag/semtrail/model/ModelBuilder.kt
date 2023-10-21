@@ -1,5 +1,6 @@
 package com.framstag.semtrail.model
 
+import com.framstag.semtrail.generator.*
 import com.framstag.semtrail.parser.ExecutionContext
 import com.framstag.semtrail.parser.NilValue
 import com.framstag.semtrail.parser.Value
@@ -55,7 +56,13 @@ class ModelBuilder(private val model: Model) {
         return NilValue.NIL
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun onConfig(context: ExecutionContext, values: Vector<Value>): Value {
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onReport(context: ExecutionContext, values: Vector<Value>): Value {
         return NilValue.NIL
     }
 
@@ -113,6 +120,82 @@ class ModelBuilder(private val model: Model) {
 
         fromNode.addOutgoingEdge(Edge(fromNode,type,toNode))
         toNode.addIncomingEdge(Edge(fromNode,type,toNode))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onAllNodesTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(AllNodesTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onAllNodesImage(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(AllNodesImageGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onStarterTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(StarterTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onLeavesTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(LeavesTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onMostCausesTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(MostCausesTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onMostConsequencesTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(MostConsequencesTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onMostConnectedTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(MostConnectedTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onOrphansTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(OrphansTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onNoDocTable(context: ExecutionContext, values: Vector<Value>): Value {
+        model.generators.add(NoDocTableGenerator(model.targetDirectory,model))
+
+        return NilValue.NIL
+    }
+
+    fun onNodeTypeTable(context: ExecutionContext, values: Vector<Value>): Value {
+        val nodeType = context.assertStringParameter(values,0,"nodeTypeTable","nodeType") ?: return NilValue.NIL
+
+        if (!model.nodeTypes.contains(nodeType)) {
+            logger.error("nodeTypeTable: type '${nodeType}' is unknown")
+            return NilValue.NIL
+        }
+
+        model.generators.add(NodeTypeTableGenerator(model.targetDirectory,model,nodeType))
 
         return NilValue.NIL
     }

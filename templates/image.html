@@ -37,7 +37,7 @@
                 {
                     id: [[${node.hashCode()}]],
                     label: [[${node.name}]],
-                    title: [[${model.nodeTypes[node.type].name}]]+": "+[[${node.doc}]],
+                    title: [[${model.nodeTypes[node.type].name}+': '+${node.doc}]],
                     color: [[${model.nodeTypes[node.type].color}]]
                 },
                 /*[/]*/
@@ -69,7 +69,8 @@
             var options = {
                 nodes: {
                     borderWidth: 2,
-                    shadow:true
+                    shadow:true,
+                    shape: "box"
                 },
                 edges: {
                     width: 2,

@@ -6,11 +6,16 @@ import java.util.Vector
 class Executor {
     companion object : KLogging()
 
+    private var errorCount = 0;
 
     fun evaluate(code: Type, lookupContext: LookupContext):Value {
         val context = ExecutionContext()
 
         return evaluate(context, code, lookupContext)
+    }
+
+    fun hasErrors():Boolean {
+        return errorCount >0
     }
 
     private fun evaluate(context: ExecutionContext, code: Type, lookupContext: LookupContext): Value {
@@ -49,6 +54,8 @@ class Executor {
 
         if (!functionNameType.isSymbol()) {
             logger.error("Function name must be of type 'Symbol'")
+            errorCount++
+            return NilValue.NIL
         }
 
         val functionName = functionNameType.toSymbol().value()
@@ -56,6 +63,7 @@ class Executor {
 
         if (function == null) {
             logger.error("No function '${functionName}' defined")
+            errorCount++
             return NilValue.NIL
         }
 
@@ -67,6 +75,7 @@ class Executor {
             (functionIsVariadic && !functionMinimumParameterAsDefined)
         ) {
             logger.error("Function '$functionName' has arity ${function.parameterCount} and variadic $functionIsVariadic, but parameter count is ${call.getParameter().size - 1}")
+            errorCount++
             return NilValue.NIL
         }
 
@@ -101,6 +110,7 @@ class Executor {
 
             if (!keyValue.isStringValue()) {
                 logger.error("key value of map is not of type 'String'")
+                errorCount++
                 return NilValue.NIL
             }
 

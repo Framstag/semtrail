@@ -1,14 +1,12 @@
 (semtrail "Semtrail"
 
-  (log "An example of the Semtrail syntax describing a semtrail for the application itself")
-
   (config
     ;; See https://html-color.codes/
 
-    (nodeType :general-condition "General condition" "#cccccc")           ;; grey
+    (nodeType :constraint "Constraint" "#cccccc")                         ;; grey
     (nodeType :functional-requirement "Functional requirement" "#cccc00") ;; yellow
     (nodeType :quality-attribute "Quality attribute" "#ee82ee")           ;; violet
-    (nodeType :assumption "Assumption attribute" "#ff5349")               ;; red
+    (nodeType :assumption "Assumption" "#ff5349")                         ;; red
     (nodeType :fact "Fact" "#32cd32")                                     ;; green
     (nodeType :concept "Concept" "#f4a460")                               ;; brown
     (nodeType :technology "Technology" "#00bfff")                         ;; blue
@@ -21,11 +19,11 @@
 
   ;; General condition
 
-  (node "Known programming languages" :general-condition {
+  (node "Known programming languages" :constraint {
     :doc "We have focus on DSLs and semantic tree and do not want to learn a new language"
   })
 
-  (node "Learn something" :general-condition {
+  (node "Learn something" :constraint {
     :doc "We want to do something we did not do before and learn from it"
   })
 
@@ -197,4 +195,26 @@
 
   (edge "Known programming languages" :decision "Kotlin")
   (edge "JVM language" :decision "Kotlin")
+
+  (report
+    (allNodesTable)
+    (allNodesImage)
+
+    (nodeTypeTable :constraint)
+    (nodeTypeTable :quality-attribute)
+    (nodeTypeTable :constraint)
+    (nodeTypeTable :assumption)
+    (nodeTypeTable :fact)
+    (nodeTypeTable :concept)
+    (nodeTypeTable :technology)
+
+    (starterTable)
+    (leavesTable)
+    (mostCausesTable)
+    (mostConsequencesTable)
+    (mostConnectedTable)
+
+    (orphansTable)
+    (noDocTable)
+  )
 )
