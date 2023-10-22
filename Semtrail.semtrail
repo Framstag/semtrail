@@ -197,22 +197,48 @@
   (edge "JVM language" :decision "Kotlin")
 
   (report
-    (allNodesTable)
+    (nodesTable "All")
     (allNodesImage)
 
-    (nodeTypeTable :constraint)
-    (nodeTypeTable :functional-requirement)
-    (nodeTypeTable :quality-attribute)
-    (nodeTypeTable :assumption)
-    (nodeTypeTable :fact)
-    (nodeTypeTable :concept)
-    (nodeTypeTable :technology)
+    ;; Overview per node type
+
+    (nodesTable "Constraint" {
+      :types '(:constraint)
+    })
+
+    (nodesTable "Functional Requirement" {
+      :types '(:functional-requirement)
+    })
+
+    (nodesTable "Quality Attributes" {
+      :types '(:quality-attribute)
+    })
+
+    (nodesTable "Assumptions" {
+      :types '(:assumption)
+    })
+
+    (nodesTable "Facts" {
+      :types '(:fact)
+    })
+
+    (nodesTable "Concepts" {
+      :types '(:concept)
+    })
+
+    (nodesTable "Technology" {
+      :types '(:technology)
+    })
+
+    ;; Special views
 
     (starterTable)
     (leavesTable)
     (mostCausesTable)
     (mostConsequencesTable)
     (mostConnectedTable)
+
+    ;; Checks
 
     (orphansTable)
     (noDocTable)

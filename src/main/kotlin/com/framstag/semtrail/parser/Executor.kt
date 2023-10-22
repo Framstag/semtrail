@@ -59,22 +59,29 @@ class Executor {
         }
 
         val functionName = functionNameType.toSymbol().value()
-        val function = lookupContext.getFunction(functionName)
+        val functions = lookupContext.getFunction(functionName)
+        var function : FunctionDefinition? = null
 
-        if (function == null) {
+        if (functions.isEmpty()) {
             logger.error("No function '${functionName}' defined")
             errorCount++
             return NilValue.NIL
         }
 
-        val functionIsVariadic = function.variadic
-        val functionParameterSizeMatches = call.getParameter().size-1 == function.parameterCount
-        val functionMinimumParameterAsDefined = call.getParameter().size-1 >= function.parameterCount
+        for (possibleFunction in functions) {
+            val functionIsVariadic = possibleFunction.variadic
+            val functionParameterSizeMatches = call.getParameter().size-1 == possibleFunction.parameterCount
+            val functionMinimumParameterAsDefined = call.getParameter().size-1 >= possibleFunction.parameterCount
 
-        if ((!functionIsVariadic && !functionParameterSizeMatches) ||
-            (functionIsVariadic && !functionMinimumParameterAsDefined)
-        ) {
-            logger.error("Function '$functionName' has arity ${function.parameterCount} and variadic $functionIsVariadic, but parameter count is ${call.getParameter().size - 1}")
+            if ((!functionIsVariadic && functionParameterSizeMatches) ||
+                (functionIsVariadic && functionMinimumParameterAsDefined)) {
+                function = possibleFunction
+                break
+            }
+        }
+
+        if (function == null) {
+            logger.error("No function definition for function '$functionName' found with arity ${call.getParameter().size-1}")
             errorCount++
             return NilValue.NIL
         }

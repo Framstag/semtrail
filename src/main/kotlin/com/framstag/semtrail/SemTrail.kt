@@ -95,9 +95,17 @@ fun createApplicationContext(callback: ParserCallback): LookupContext {
 
     reportLookup.addFunction(
         FunctionDefinition(
-            "allNodesTable",
-            callback::onAllNodesTable,
-            0
+            "nodesTable",
+            callback::onNodesTable,
+            1
+        )
+    )
+
+    reportLookup.addFunction(
+        FunctionDefinition(
+            "nodesTable",
+            callback::onNodesTable,
+            2
         )
     )
 
@@ -162,14 +170,6 @@ fun createApplicationContext(callback: ParserCallback): LookupContext {
             "noDocTable",
             callback::onNoDocTable,
             0
-        )
-    )
-
-    reportLookup.addFunction(
-        FunctionDefinition(
-            "nodeTypeTable",
-            callback::onNodeTypeTable,
-            1
         )
     )
 

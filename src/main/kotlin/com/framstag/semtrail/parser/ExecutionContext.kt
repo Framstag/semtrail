@@ -33,4 +33,16 @@ class ExecutionContext {
 
         return values[index].toMapValue().value
     }
+
+    fun assertMapParameterOrEmpty(values: Vector<Value>, index: Int, functionName: String, parameterName: String): Map<StringValue, Value>? {
+        if (index>=values.size) {
+            return  mapOf<StringValue,Value>()
+        }
+        else if (!values[index].isMapValue()) {
+            ParserCallback.logger.error("Expected type 'Map' for parameter '$parameterName' at index ${index + 1} of function '$functionName'")
+            return null
+        }
+
+        return values[index].toMapValue().value
+    }
 }

@@ -129,9 +129,39 @@ class ParserCallback(private val config: Configuration, private val model: Model
         return NilValue.NIL
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun onAllNodesTable(context: ExecutionContext, values: Vector<Value>): Value {
-        config.generators.add(AllNodesTableGenerator())
+    fun onNodesTable(context: ExecutionContext, values: Vector<Value>): Value {
+        val name = context.assertStringParameter(values,0,"nodesTable","name") ?: return NilValue.NIL
+        val parameter = context.assertMapParameterOrEmpty(values,1,"nodesTable","parameter") ?: return NilValue.NIL
+
+        val types = mutableSetOf<String>()
+
+        parameter.entries.forEach {
+            when (it.key.value) {
+                ":types" -> {
+                    if (!it.value.isListValue()) {
+                        logger.error("Value for key ':types' for argument 'parameter' of function 'nodesTables' must be of type 'List'")
+                        return NilValue.NIL
+                    }
+
+                    it.value.toListValue().value.forEach {
+                        if (!it.isStringValue()) {
+                            logger.error("List parameter for key ':types' of argument 'parameter' of function 'nodesTables' must be of type 'String'")
+                            return NilValue.NIL
+                        }
+
+                        // TODO: verify that the parameter is a node type
+
+                        types.add(it.toStringValue().value)
+                    }
+                }
+                else -> {
+                    logger.error("Unknown key ${it.key.value} for parameter 'parameter' of 'nodesTable' function")
+                    return NilValue.NIL
+                }
+            }
+        }
+
+        config.generators.add(NodesTableGenerator(name,types))
 
         return NilValue.NIL
     }
@@ -188,19 +218,6 @@ class ParserCallback(private val config: Configuration, private val model: Model
     @Suppress("UNUSED_PARAMETER")
     fun onNoDocTable(context: ExecutionContext, values: Vector<Value>): Value {
         config.generators.add(NoDocTableGenerator())
-
-        return NilValue.NIL
-    }
-
-    fun onNodeTypeTable(context: ExecutionContext, values: Vector<Value>): Value {
-        val nodeType = context.assertStringParameter(values,0,"nodeTypeTable","nodeType") ?: return NilValue.NIL
-
-        if (!model.nodeTypes.contains(nodeType)) {
-            logger.error("nodeTypeTable: type '${nodeType}' is unknown")
-            return NilValue.NIL
-        }
-
-        config.generators.add(NodeTypeTableGenerator(nodeType))
 
         return NilValue.NIL
     }

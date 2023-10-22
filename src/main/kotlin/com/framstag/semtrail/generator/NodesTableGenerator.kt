@@ -1,22 +1,20 @@
 package com.framstag.semtrail.generator
 
-import com.framstag.semtrail.model.Model
+import com.framstag.semtrail.model.Node
 import com.framstag.semtrail.model.Page
 import mu.KLogging
-import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import java.nio.file.Paths
 
-class AllNodesTableGenerator(): Generator() {
+class NodesTableGenerator(private val name: String, private val types: Set<String>): Generator() {
 
     private val templateFile = "index"
-    private val targetFile = "index.html"
-    private val label = "All"
+    private val targetFile = "$name.html"
 
     companion object : KLogging()
 
     override fun getPages(data : PagesData): List<Page> {
-        return listOf(Page(Paths.get(targetFile),label));
+        return listOf(Page(Paths.get(targetFile),name));
     }
 
     override fun generate(data : GenerateData) {
@@ -24,11 +22,11 @@ class AllNodesTableGenerator(): Generator() {
 
         val context = Context()
 
-        val nodeList = data.model.nodeMap.values.toMutableList()
-
-        nodeList.sortBy {
+        val nodeList : List<Node> = data.model.nodeMap.values.filter {
+            if (types.isEmpty()) true else types.contains(it.type)
+        }.sortedBy {
             it.name
-        }
+        }.toList()
 
         bindDataToContext(context,data)
 

@@ -203,11 +203,6 @@ class ASTParser(private val scanner: Scanner) {
                 unexpectedEOL(scanner.token)
                 null
             }
-
-            else -> {
-                // Should never happen
-                null
-            }
         }
 
         return type
