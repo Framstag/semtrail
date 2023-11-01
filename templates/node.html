@@ -64,44 +64,51 @@
 
         <script th:inline="javascript">
             // create an array with nodes
-            var nodes = new vis.DataSet([
+
+            function onDoubleCLick(properties) {
+                if (properties.nodes.length === 1) {
+                    window.open(properties.nodes[0]+'.html','_self')
+                }
+            }
+
+            const nodes = new vis.DataSet([
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
                 {
                     id: [[${edge.from.hashCode()}]],
                     label: [[${edge.from.name}]],
-                    title:  [[${model.nodeTypes[edge.from.type].name}+': '+${edge.from.doc}]],
+                    title: [[${model.nodeTypes[edge.from.type].name}+': ' +${edge.from.doc}]],
                     color: [[${model.nodeTypes[edge.from.type].color}]]
                 },
                 /*[/]*/
                 {
                     id: [[${node.hashCode()}]],
-                     label: [[${node.name}]],
-                     title:  [[${model.nodeTypes[node.type].name}+': '+${node.doc}]],
-                     color: [[${model.nodeTypes[node.type].color}]],
-                     borderWidth: 4,
-                     fixed: {
+                    label: [[${node.name}]],
+                    title: [[${model.nodeTypes[node.type].name}+': ' +${node.doc}]],
+                    color: [[${model.nodeTypes[node.type].color}]],
+                    borderWidth: 4,
+                    fixed: {
                         x: true,
                         y: true
-                     }
+                    }
                 },
                 /*[# th:each="edge : ${node.toNodes.values}"]*/
                 {
                     id: [[${edge.to.hashCode()}]],
                     label: [[${edge.to.name}]],
-                    title:  [[${model.nodeTypes[edge.to.type].name}+': '+${edge.to.doc}]],
+                    title: [[${model.nodeTypes[edge.to.type].name}+': ' +${edge.to.doc}]],
                     color: [[${model.nodeTypes[edge.to.type].color}]]
                 },
                 /*[/]*/
             ]);
 
             // create an array with edges
-            var edges = new vis.DataSet([
+            const edges = new vis.DataSet([
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
                 {
-                    from:   [[${edge.from.hashCode()}]],
-                    to:     [[${edge.to.hashCode()}]],
+                    from: [[${edge.from.hashCode()}]],
+                    to: [[${edge.to.hashCode()}]],
                     arrows: 'to',
-                    title:  [[${model.edgeTypes[edge.type].name}]],
+                    title: [[${model.edgeTypes[edge.type].name}]],
                     color: {
                         color: [[${model.edgeTypes[edge.type].color}]]
                     }
@@ -109,10 +116,11 @@
                 /*[/]*/
                 /*[# th:each="edge : ${node.toNodes.values}"]*/
                 {
-                    from:   [[${edge.from.hashCode()}]],
-                    to:     [[${edge.to.hashCode()}]],
+                    from: [[${edge.from.hashCode()}]],
+                    to: [[${edge.to.hashCode()}]],
                     arrows: 'to',
-                    title:  [[${model.edgeTypes[edge.type].name}]],
+                    title: [[${model.edgeTypes[edge.type].name}]],
+                    label: [[${model.edgeTypes[edge.type].name}]],
                     color: {
                         color: [[${model.edgeTypes[edge.type].color}]]
                     }
@@ -121,23 +129,27 @@
             ]);
 
             // create a network
-            var container = document.getElementById('map');
-            var data = {
+            const container = document.getElementById('map');
+            const data = {
                 nodes: nodes,
                 edges: edges
             };
-            var options = {
+            const options = {
+                smoothCurves: true,
                 nodes: {
                     borderWidth: 2,
-                    shadow:true,
+                    fontSize: 20,
+                    shadow: true,
                     shape: "box"
                 },
                 edges: {
                     width: 2,
-                    shadow:true
+                    fontSize: 5,
+                    shadow: true
                 }
             };
-            var network = new vis.Network(container, data, options);
+            const network = new vis.Network(container, data, options);
+            network.on('doubleClick',onDoubleCLick)
         </script>
     </main>
 

@@ -31,28 +31,35 @@
         <div id="map"></div>
 
         <script th:inline="javascript">
+            function onDoubleCLick(properties) {
+                if (properties.nodes.length === 1) {
+                    window.open('nodes/'+properties.nodes[0]+'.html','_self')
+                }
+            }
+
             // create an array with nodes
-            var nodes = new vis.DataSet([
+            const nodes = new vis.DataSet([
                 /*[# th:each="node : ${nodes}"]*/
                 {
                     id: [[${node.hashCode()}]],
                     label: [[${node.name}]],
-                    title: [[${model.nodeTypes[node.type].name}+': '+${node.doc}]],
+                    title: [[${model.nodeTypes[node.type].name}+': ' +${node.doc}]],
                     color: [[${model.nodeTypes[node.type].color}]]
                 },
                 /*[/]*/
             ]);
 
             // create an array with edges
-            var edges = new vis.DataSet([
+            const edges = new vis.DataSet([
                 /*[# th:each="node : ${nodes}"]*/
                 /*[# th:each="edge : ${node.fromNodes.values}"]*/
                 {
-                    from:   [[${edge.from.hashCode()}]],
-                    to:     [[${edge.to.hashCode()}]],
+                    from: [[${edge.from.hashCode()}]],
+                    to: [[${edge.to.hashCode()}]],
                     arrows: 'to',
-                    title:  [[${model.edgeTypes[edge.type].name}]],
-                    color:  {
+                    title: [[${model.edgeTypes[edge.type].name}]],
+                    label: [[${model.edgeTypes[edge.type].name}]],
+                    color: {
                         color: [[${model.edgeTypes[edge.type].color}]]
                     }
                 },
@@ -61,23 +68,27 @@
             ]);
 
             // create a network
-            var container = document.getElementById('map');
-            var data = {
+            const container = document.getElementById('map');
+            const data = {
                 nodes: nodes,
                 edges: edges
             };
-            var options = {
+            const options = {
+                smoothCurves: true,
                 nodes: {
                     borderWidth: 2,
-                    shadow:true,
+                    fontSize: 20,
+                    shadow: true,
                     shape: "box"
                 },
                 edges: {
                     width: 2,
-                    shadow:true
+                    fontSize: 5,
+                    shadow: true
                 }
             };
-            var network = new vis.Network(container, data, options);
+            const network = new vis.Network(container, data, options);
+            network.on('doubleClick',onDoubleCLick)
         </script>
     </main>
 
