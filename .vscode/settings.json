@@ -26,4 +26,5 @@
     "cSpell.enableFiletypes": [
         "kotlin"
     ],
+    "java.configuration.updateBuildConfiguration": "automatic",
 }

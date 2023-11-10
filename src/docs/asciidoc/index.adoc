@@ -1,0 +1,54 @@
+= Semtrail: Architecture Documentation
+:author: Tim Teulings
+:email: tim@framstag.com
+:description: Architecture documentation of Semtrail using JQAssistant reporting functionality
+:toc: left
+:toc-title: Contents
+:toclevels: 4
+:sectlinks:
+:sectanchors:
+:sectnums:
+:optimize: screen
+:lang: en
+:attribute-missing: warn
+:keywords: JQAssistant, Living Documentation
+
+== Documentation Tooling
+
+This project uses:
+
+[opts="header"]
+|===
+|Tool|Link|Description
+|JQAssistant|https://github.com/jqassistant|For generation reports and checks
+|Asciidoc|https://docs.asciidoctor.org/asciidoc/latest/|For this documentation
+|jqassistant-asciidoctorj-extensions|https://github.com/jqassistant-tooling/jqassistant-asciidoctorj-extensions|As postprocessor to integrate JQAssistant output to Asciidoc
+|Freemaker|https://freemarker.apache.org/docs/index.html|As template engine between JQAssistant and Asdciidoc
+|===
+
+include::build.adoc[]
+
+== Description information
+
+include::description.adoc[]
+
+include::licenses.adoc[]
+
+== Package Structure and Information
+
+include::packages.adoc[]
+
+The following architecture checks are executed.
+
+include::architecture.adoc[]
+
+== Logging
+
+include::logging.adoc[]
+
+
+include::metrics.adoc[]
+
+== All Concepts and Constraints
+
+include::jQAssistant:Summary[constraints="architecture:*,build:*,description:*,filter:*,logging:*,metrics:*,modifier:*,packages:*,selector:*", concepts="architecture:*,build:*,description:*,filter:*,logging:*,metrics:*,modifier:*,packages:*,selector:*"]

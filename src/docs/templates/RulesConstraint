@@ -1,0 +1,37 @@
+<#list constraints as rule>
+****
+<#if rule.status == "SUCCESS">
+TIP: ${rule.id} +
+${rule.description}
+<#elseif rule.status == "WARNING">
+WARNING: ${rule.id} +
+${rule.description}
+<#elseif rule.status == "FAILURE">
+CAUTION: ${rule.id} +
+${rule.description}
+<#else>
+NOTE: ${rule.id} +
+${rule.description}
+</#if>
+<#if rule.hasReports>
+<#list rule.reports.links as labeledLink>
+link:${labeledLink.link}[${labeledLink.label}]
+</#list>
+<#list rule.reports.images as labeledImage>
+.${rule.description}
+[#${rule.id},link=${labeledImage.link}]
+image::${labeledImage.link}[${labeledImage.label}]
+</#list>
+<#elseif rule.hasResult>
+[opts="header"]
+|===
+<#list rule.resultColumnKeys as key>|${key} </#list>
+<#list rule.resultRows as row>
+<#list row as cell>
+|${cell}
+</#list>
+</#list>
+|===
+</#if>
+****
+</#list>

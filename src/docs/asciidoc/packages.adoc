@@ -1,0 +1,25 @@
+=== Overall Structure
+
+All code is located under the root package `com.framstag.semtrail`.
+
+include::jQAssistant:Rules[constraints="package:RootPackage"]
+
+=== List of Packages
+
+This is the package structure of Semtrail:
+
+include::jQAssistant:Rules[concepts="packages:PackageStructure"]
+
+The following packages exists:
+
+include::jQAssistant:Rules[concepts="packages:PackageDocumentation"]
+
+include::jQAssistant:Rules[concepts="packages:Module"]
+
+Dependency graph between modules (including weight),
+excluding the following modules:
+
+- exceptions
+- annotation
+
+include::jQAssistant:Rules[concepts="packages:ModuleDependencies"]

@@ -1,0 +1,24 @@
+== Build Information
+
+=== Project Version
+
+AcousticRules uses Maven as build tool. The current project version is:
+
+include::jQAssistant:Rules[concepts="build:ProjectVersion"]
+
+=== Maven Build Dependencies
+
+The main dependencies are as follows:
+
+- A JSON parser (yyson)
+- A command line argument parser (picocli)
+- A Logging framework (SLF4J + logback)
+- A Unit Test framework (JUnit 5)
+
+This is the complete dependency tree:
+
+include::jQAssistant:Rules[concepts="build:MavenDependencies"]
+
+Currently, the following dependency versions are used:
+
+include::jQAssistant:Rules[concepts="build:MavenDependenciesVersion"]

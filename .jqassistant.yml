@@ -1,0 +1,28 @@
+jqassistant:
+  plugins:
+    - group-id: org.jqassistant.plugin
+      artifact-id: jqassistant-plantuml-report-plugin
+      version: 2.0.1
+    - group-id: org.jqassistant.plugin
+      artifact-id: jqassistant-cyclonedx-plugin
+      version: 1.0.0
+
+  scan:
+    include:
+      files:
+        - src/main/java
+        - src/test/java
+        - target/classes
+        - target/test-classes
+        - cyclonedx:sbom::target/bom.xml
+        - cyclonedx:sbom::target/bom.json
+  analyze:
+    rule-parameters:
+      rootPackage: com.framstag.semtrail
+    report:
+      warn-on-severity: MINOR
+      fail-on-severity: BLOCKER
+      continue-on-failure: false
+      create-archive: true
+    groups:
+      - Semtrail
